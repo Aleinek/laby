@@ -1,0 +1,9 @@
+#include <iostream>
+#include <vector>
+#include <memory>
+#include "Kolo.hpp"
+#include "Kwadrat.hpp"
+#include "Prostokat.hpp"
+#include "Romb.hpp"
+#include "Pieciokat.hpp"
+#include "Szesciokat.hpp"
