@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -15,27 +16,32 @@ public class Main {
                         i += 2;
                         break;
                     case "c":
-                        try{
+                        int paramsCount = 0;
+                        while(i+paramsCount+1 < args.length && 
+                                !Arrays.asList("o", "c", "p", "s").contains(args[i+paramsCount+1])) {
+                            paramsCount ++;
+                        }
+
+                        if (paramsCount == 5) {
                             double bok1 = Double.parseDouble(args[i + 1]);
                             double bok2 = Double.parseDouble(args[i + 2]);
                             double bok3 = Double.parseDouble(args[i + 3]);
                             double bok4 = Double.parseDouble(args[i + 4]);
                             double kat = Double.parseDouble(args[i + 5]);
-                            
+
                             if (kat == 90){
                                 if (bok1 <= 0 || bok2 <= 0 || bok3 <= 0 || bok4 <= 0 || kat <= 0) {
                                     throw new ArrayIndexOutOfBoundsException("Boki i kąt muszą być większe od zera.");
                                 }
-
                                 if (bok1 == bok3 && bok2 == bok4 || bok1 == bok4 && bok2 == bok3) {
                                     figury.add(new Prostokat(bok1, bok2));
                                 }else{
                                     throw new ArrayIndexOutOfBoundsException("Boki muszą być równe.");
-                                }                                  
+                                }
                             }
-                            
+
                             i += 6;
-                        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e){
+                        } else if (paramsCount == 2) {
                             double bok1 = Double.parseDouble(args[i + 1]);
                             double kat = Double.parseDouble(args[i + 2]);
 
@@ -48,6 +54,8 @@ public class Main {
                                 figury.add(new Romb(bok1, kat));
                             }
                             i += 3;
+                        } else {
+                            throw new IllegalArgumentException("a");
                         }
                         break;
                     case "p":
