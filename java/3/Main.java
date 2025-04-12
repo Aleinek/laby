@@ -31,12 +31,15 @@ public class Main {
 
                             if (kat == 90){
                                 if (bok1 <= 0 || bok2 <= 0 || bok3 <= 0 || bok4 <= 0 || kat <= 0) {
-                                    throw new ArrayIndexOutOfBoundsException("Boki i kąt muszą być większe od zera.");
+                                    throw new IllegalArgumentException("Boki i kąt muszą być większe od zera.");
                                 }
                                 if (bok1 == bok3 && bok2 == bok4 || bok1 == bok4 && bok2 == bok3) {
                                     figury.add(new Prostokat(bok1, bok2));
-                                }else{
-                                    throw new ArrayIndexOutOfBoundsException("Boki muszą być równe.");
+                                }else if (bok1 == bok2 && bok3 == bok4){
+                                    figury.add(new Prostokat(bok1, bok3));
+                                }
+                                else{
+                                    throw new IllegalArgumentException("Boki muszą być równe.");
                                 }
                             }
 
@@ -46,7 +49,7 @@ public class Main {
                             double kat = Double.parseDouble(args[i + 2]);
 
                             if (bok1 <= 0 || kat <= 0) {
-                                throw new ArrayIndexOutOfBoundsException("Boki i kąt muszą być większe od zera.");
+                                throw new IllegalArgumentException("Boki i kąt muszą być większe od zera.");
                             }
                             if (kat == 90){
                                 figury.add(new Kwadrat(bok1));
@@ -72,7 +75,7 @@ public class Main {
                         System.out.println("Nieznany typ figury.");
                         return;
                 }
-            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
                 System.out.println("Błąd: " + e.getMessage());
                 return;
             }
