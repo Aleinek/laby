@@ -41,16 +41,13 @@ public class GeometricEditor extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Geometric Editor");
 
-        // Main layout
         BorderPane root = new BorderPane();
 
-        // Canvas for drawing
         canvas = new Canvas(1600, 900);
         gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // Top menu
         MenuBar menuBar = new MenuBar();
 
         Menu fileMenu = new Menu("File");
@@ -70,7 +67,6 @@ public class GeometricEditor extends Application {
 
         menuBar.getMenus().addAll(fileMenu, shapeMenu, helpMenu);
 
-        // Shape selection actions
         circleItem.setOnAction(e -> {
             selectedShape = "Circle";
             updateSelectedShapeText();
@@ -90,11 +86,9 @@ public class GeometricEditor extends Application {
             updateSelectedShapeText();
         });
 
-        // Save and Load actions
         saveItem.setOnAction(e -> saveShapes(primaryStage));
         loadItem.setOnAction(e -> loadShapes(primaryStage));
 
-        // Info dialog
         infoItem.setOnAction(e -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("About Geometric Editor");
@@ -103,38 +97,75 @@ public class GeometricEditor extends Application {
             alert.showAndWait();
         });
 
-        // Left panel with controls
         VBox leftPanel = new VBox();
         leftPanel.setSpacing(10);
 
         Label colorLabel = new Label("Fill Color:");
         colorPicker = new ColorPicker(Color.BLACK);
 
-        // Text to display the selected shape
         selectedShapeText = new Text("Selected Shape: Circle");
         updateSelectedShapeText();
 
-        // Button to finish polygon drawing
         finishPolygonButton = new Button("Finish Polygon");
         finishPolygonButton.setDisable(true);
         finishPolygonButton.setOnAction(e -> finishPolygon());
 
         leftPanel.getChildren().addAll(colorLabel, colorPicker, selectedShapeText, finishPolygonButton);
 
-        // Event handling for drawing, selecting, and resizing shapes
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onMousePressed);
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::onMouseDragged);
         canvas.addEventHandler(ScrollEvent.SCROLL, this::onScroll);
 
-        // Add components to root layout
         root.setTop(menuBar);
         root.setLeft(leftPanel);
         root.setCenter(canvas);
 
-        // Set up the scene
+        createContextMenuForShapes();
+
         Scene scene = new Scene(root, 1920, 1080);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void createContextMenuForShapes() {
+    ContextMenu contextMenu = new ContextMenu();
+
+    // Opcja zmiany koloru
+    MenuItem changeColorItem = new MenuItem("Zmień kolor");
+    changeColorItem.setOnAction(e -> {
+        if (activeShape != null) {
+            Color newColor = colorPicker.getValue(); // Pobierz kolor z ColorPicker
+            activeShape.setColor(newColor); // Zmień kolor aktywnej figury
+            redrawShapes(); // Odśwież rysowanie
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano żadnej figury!", ButtonType.OK);
+            alert.showAndWait();
+        }
+    });
+
+    // Opcja usunięcia figury
+    MenuItem deleteShapeItem = new MenuItem("Usuń figurę");
+        deleteShapeItem.setOnAction(e -> {
+            if (activeShape != null) {
+                shapes.remove(activeShape); // Usuń aktywną figurę z listy
+                activeShape = null; // Wyzeruj aktywną figurę
+                redrawShapes(); // Odśwież rysowanie
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano żadnej figury!", ButtonType.OK);
+                alert.showAndWait();
+            }
+        });
+
+        contextMenu.getItems().addAll(changeColorItem, deleteShapeItem);
+
+        // Dodajemy zdarzenie do wyświetlania menu kontekstowego
+        canvas.setOnMousePressed(event -> {
+            if (event.isSecondaryButtonDown()) { // Kliknięcie prawym przyciskiem myszy
+                contextMenu.show(canvas, event.getScreenX(), event.getScreenY());
+            } else {
+                contextMenu.hide(); // Ukryj menu, jeśli kliknięto innym przyciskiem
+            }
+        });
     }
 
     private void saveShapes(Stage stage) {
@@ -144,7 +175,6 @@ public class GeometricEditor extends Application {
         File file = fileChooser.showSaveDialog(stage);
 
         if (file != null) {
-            // Ensure the file has the .shapes extension
             if (!file.getName().endsWith(".shapes")) {
                 file = new File(file.getAbsolutePath() + ".shapes");
             }
@@ -170,7 +200,7 @@ public class GeometricEditor extends Application {
         if (file != null) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
                 shapes = (List<Shape>) ois.readObject();
-                activeShape = null; // Clear active shape
+                activeShape = null;
                 redrawShapes();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Shapes loaded successfully!", ButtonType.OK);
                 alert.showAndWait();
@@ -183,15 +213,17 @@ public class GeometricEditor extends Application {
 
     private void onMousePressed(MouseEvent e) {
         if (isDrawingPolygon && "Polygon".equals(selectedShape)) {
-            // Add points to the polygon
+            // Dodawanie punktów do wielokąta
             polygonXPoints.add(e.getX());
             polygonYPoints.add(e.getY());
+            activeShape = null; // Ustaw aktywną figurę na null podczas rysowania wierzchołków
             redrawShapes();
         } else {
-            // Handle other shape drawing
+            // Obsługa rysowania innych figur
             lastMouseX = e.getX();
             lastMouseY = e.getY();
             boolean shapeClicked = false;
+
             for (Shape shape : shapes) {
                 if (shape.contains(lastMouseX, lastMouseY)) {
                     activeShape = shape;
@@ -239,9 +271,9 @@ public class GeometricEditor extends Application {
         if (activeShape != null) {
             double scaleFactor = 1;
             if (e.getDeltaY() < 0) {
-                scaleFactor = 0.9; // Zoom out
+                scaleFactor = 0.9;
             } else if (e.getDeltaY() > 0) {
-                scaleFactor = 1.1; // Zoom in
+                scaleFactor = 1.1;
             }
             activeShape.resize(scaleFactor);
             redrawShapes();

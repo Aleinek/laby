@@ -148,6 +148,10 @@ public class Shape implements Serializable {
         }
     }
 
+    public void setColor(Color color) {
+        this.colorHex = colorToHex(color);
+    }
+
     // Convert Color to Hex String
     private String colorToHex(Color color) {
         return String.format("#%02X%02X%02X",
