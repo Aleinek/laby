@@ -94,7 +94,7 @@ public class GeometricEditor extends Application {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("About Geometric Editor");
             alert.setHeaderText("Simple Geometric Editor");
-            alert.setContentText("Author: Aleinek\nPurpose: Create and modify geometric shapes.\nResolution: Optimized for 1920x1080.");
+            alert.setContentText("Author: Adam Kulwicki\nPurpose: Create and modify geometric shapes.");
             alert.showAndWait();
         });
 
@@ -130,7 +130,7 @@ public class GeometricEditor extends Application {
     }
 
     private void onKeyPressed(KeyEvent event) {
-        if (activeShape != null && "Rectangle".equals(activeShape.getType())) {
+        if (activeShape != null && ("Rectangle".equals(activeShape.getType()) || "Polygon".equals(activeShape.getType()))) {
             switch (event.getCode()) {
                 case LEFT: // Rotate left (decrease angle)
                     activeShape.setRotationAngle(activeShape.getRotationAngle() - 5);
