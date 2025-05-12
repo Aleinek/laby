@@ -412,7 +412,31 @@ public class GeometricEditor extends Application {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About Geometric Editor");
         alert.setHeaderText("Simple Geometric Editor");
-        alert.setContentText("Author: Adam Kulwicki\nPurpose: Drawing and modifying geometric shapes.");
+        alert.setContentText(
+                "Author: Adam Kulwicki\n" +
+                "Purpose: Create and modify geometric shapes.\n\n" +
+                "Instructions:\n" +
+                "1. Selecting Shapes:\n" +
+                "   - Use the 'Shapes' menu to select the type of shape you want to draw: Circle, Rectangle, or Polygon.\n" +
+                "   - For polygons, enter 'Polygon' mode and click on the canvas to add points. Click 'Finish Polygon' to complete.\n\n" +
+                "2. Drawing Shapes:\n" +
+                "   - Click on the canvas to draw a Circle or Rectangle at the clicked position.\n" +
+                "   - Polygons require multiple clicks to define the vertices. Use the 'Finish Polygon' button to finalize the shape.\n\n" +
+                "3. Modifying Shapes:\n" +
+                "   - Click on a shape to select it.\n" +
+                "   - Use the left and right arrow keys to rotate selected Rectangles or Polygons.\n" +
+                "   - Drag the mouse to move the selected shape.\n" +
+                "   - Scroll up or down to resize the selected shape.\n\n" +
+                "4. Changing Color:\n" +
+                "   - Select a shape, choose a color from the Color Picker, and right-click to change its color.\n\n" +
+                "5. Deleting Shapes:\n" +
+                "   - Right-click on a selected shape and choose 'Delete Shape' from the context menu.\n\n" +
+                "6. Saving and Loading:\n" +
+                "   - Use the 'File' menu to save or load shapes.\n" +
+                "   - Saved files use the '.shapes' extension.\n\n" +
+                "7. Additional Notes:\n" +
+                "   - The canvas supports freeform drawing and modification, but ensure polygons have at least three points before finishing.\n"
+            );
         alert.showAndWait();
     }
 
