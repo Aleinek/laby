@@ -2,29 +2,60 @@ import javafx.scene.paint.Color;
 import java.io.Serializable;
 
 /**
- * Reprezentuje ogólną figurę geometryczną (koło, prostokąt lub wielokąt).
- * Obsługuje rysowanie, przesuwanie, skalowanie oraz obrót figury.
+ * Represents a general geometric shape (circle, rectangle, or polygon).
+ * Supports drawing, moving, scaling, and rotating the shape.
  */
 public class Shape implements Serializable {
+    /**
+     * Serial version UID for ensuring compatibility during deserialization.
+     */
     private static final long serialVersionUID = 1L;
 
-    private String type; // Typ figury (Circle, Rectangle, Polygon)
-    private double x, y; // Środek figury
-    private double width, height; // Szerokość i wysokość figury
-    private double[] xPoints, yPoints; // Punkty X i Y (dla wielokątów)
-    private double[] originalXPoints, originalYPoints; // Oryginalne punkty wielokąta
-    private int pointCount; // Liczba punktów wielokąta
-    private String colorHex; // Kolor figury w formacie HEX
-    private double rotationAngle = 0.0; // Kąt obrotu figury
+    /** The type of the shape (Circle, Rectangle, Polygon). */
+    private String type;
+
+    /** The X-coordinate of the shape's center. */
+    private double x;
+
+    /** The Y-coordinate of the shape's center. */
+    private double y;
+
+    /** The width of the shape. */
+    private double width;
+
+    /** The height of the shape. */
+    private double height;
+
+    /** Array of X-coordinates for the shape's points (for polygons). */
+    private double[] xPoints;
+
+    /** Array of Y-coordinates for the shape's points (for polygons). */
+    private double[] yPoints;
+
+    /** Original X-coordinates of the polygon's points. */
+    private double[] originalXPoints;
+
+    /** Original Y-coordinates of the polygon's points. */
+    private double[] originalYPoints;
+
+    /** Number of points in the shape (for polygons). */
+    private int pointCount;
+
+    /** The color of the shape in HEX format. */
+    private String colorHex;
+
+    /** The rotation angle of the shape, in degrees. */
+    private double rotationAngle = 0.0;
 
     /**
-     * Konstruktor figury koła lub prostokąta.
-     * @param type Typ figury (Circle lub Rectangle)
-     * @param x Współrzędna X środka
-     * @param y Współrzędna Y środka
-     * @param width Szerokość figury
-     * @param height Wysokość figury
-     * @param color Kolor figury
+     * Constructs a shape of type circle or rectangle.
+     *
+     * @param type The type of the shape (Circle or Rectangle).
+     * @param x The X-coordinate of the shape's center.
+     * @param y The Y-coordinate of the shape's center.
+     * @param width The width of the shape.
+     * @param height The height of the shape.
+     * @param color The color of the shape.
      */
     public Shape(String type, double x, double y, double width, double height, Color color) {
         this.type = type;
@@ -36,12 +67,13 @@ public class Shape implements Serializable {
     }
 
     /**
-     * Konstruktor figury typu wielokąt.
-     * @param type Typ figury (Polygon)
-     * @param xPoints Tablica współrzędnych X punktów
-     * @param yPoints Tablica współrzędnych Y punktów
-     * @param pointCount Liczba punktów
-     * @param color Kolor figury
+     * Constructs a polygon shape.
+     *
+     * @param type The type of the shape (Polygon).
+     * @param xPoints Array of X-coordinates for the points of the polygon.
+     * @param yPoints Array of Y-coordinates for the points of the polygon.
+     * @param pointCount The number of points in the polygon.
+     * @param color The color of the polygon.
      */
     public Shape(String type, double[] xPoints, double[] yPoints, int pointCount, Color color) {
         this.type = type;
@@ -54,61 +86,103 @@ public class Shape implements Serializable {
         updateCentroid();
     }
 
-    // --- Gettery i Settery z Javadoc ---
+    // --- Getters and Setters with Javadoc ---
 
-    /** @return Typ figury */
+    /**
+     * Returns the type of the shape.
+     *
+     * @return The type of the shape.
+     */
     public String getType() {
         return type;
     }
 
-    /** @return Współrzędna X środka figury */
+    /**
+     * Returns the X-coordinate of the shape's center.
+     *
+     * @return The X-coordinate of the shape's center.
+     */
     public double getX() {
         return x;
     }
 
-    /** @return Współrzędna Y środka figury */
+    /**
+     * Returns the Y-coordinate of the shape's center.
+     *
+     * @return The Y-coordinate of the shape's center.
+     */
     public double getY() {
         return y;
     }
 
-    /** @return Szerokość figury */
+    /**
+     * Returns the width of the shape.
+     *
+     * @return The width of the shape.
+     */
     public double getWidth() {
         return width;
     }
 
-    /** @return Wysokość figury */
+    /**
+     * Returns the height of the shape.
+     *
+     * @return The height of the shape.
+     */
     public double getHeight() {
         return height;
     }
 
-    /** @return Tablica współrzędnych X punktów figury (dla wielokąta) */
+    /**
+     * Returns the array of X-coordinates for the shape's points (for polygons).
+     *
+     * @return Array of X-coordinates for the shape's points.
+     */
     public double[] getXPoints() {
         return xPoints;
     }
 
-    /** @return Tablica współrzędnych Y punktów figury (dla wielokąta) */
+    /**
+     * Returns the array of Y-coordinates for the shape's points (for polygons).
+     *
+     * @return Array of Y-coordinates for the shape's points.
+     */
     public double[] getYPoints() {
         return yPoints;
     }
 
-    /** @return Liczba punktów figury (dla wielokąta) */
+    /**
+     * Returns the number of points in the shape (for polygons).
+     *
+     * @return The number of points in the shape.
+     */
     public int getPointCount() {
         return pointCount;
     }
 
-    /** @return Kolor figury */
+    /**
+     * Returns the color of the shape.
+     *
+     * @return The color of the shape.
+     */
     public Color getColor() {
         return hexToColor(colorHex);
     }
 
-    /** @return Kąt obrotu figury */
+    /**
+     * Returns the rotation angle of the shape.
+     *
+     * @return The rotation angle of the shape.
+     */
     public double getRotationAngle() {
         return rotationAngle;
     }
 
     /**
-     * Ustawia kąt obrotu figury.
-     * @param angle Kąt w stopniach
+     * Sets the rotation angle of the shape.
+     * If the shape is a polygon, updates the rotation.
+     *
+     * @param angle The new rotation angle in degrees.
      */
     public void setRotationAngle(double angle) {
         this.rotationAngle = angle % 360;
@@ -118,10 +192,11 @@ public class Shape implements Serializable {
     }
 
     /**
-     * Sprawdza, czy punkt znajduje się wewnątrz figury.
-     * @param px Współrzędna X punktu
-     * @param py Współrzędna Y punktu
-     * @return true jeśli punkt znajduje się wewnątrz, w przeciwnym razie false
+     * Checks if a point is inside the shape.
+     *
+     * @param px The X-coordinate of the point.
+     * @param py The Y-coordinate of the point.
+     * @return True if the point is inside the shape; false otherwise.
      */
     public boolean contains(double px, double py) {
         switch (type) {
@@ -151,9 +226,10 @@ public class Shape implements Serializable {
     }
 
     /**
-     * Przesuwa figurę o podany wektor.
-     * @param dx Przesunięcie w osi X
-     * @param dy Przesunięcie w osi Y
+     * Moves the shape by a specified offset in the X and Y directions.
+     *
+     * @param dx The offset in the X direction.
+     * @param dy The offset in the Y direction.
      */
     public void move(double dx, double dy) {
         switch (type) {
@@ -176,8 +252,10 @@ public class Shape implements Serializable {
     }
 
     /**
-     * Skaluje figurę według współczynnika.
-     * @param scaleFactor Współczynnik skalowania
+     * Scales the shape by a specified factor.
+     * Ensures the width and height remain above a minimum size.
+     *
+     * @param scaleFactor The scaling factor.
      */
     public void resize(double scaleFactor) {
         switch (type) {
@@ -201,15 +279,19 @@ public class Shape implements Serializable {
     }
 
     /**
-     * Ustawia kolor figury.
-     * @param color Nowy kolor
+     * Updates the color of the shape.
+     *
+     * @param color The new color of the shape.
      */
     public void setColor(Color color) {
         this.colorHex = colorToHex(color);
     }
 
-    // --- Metody pomocnicze ---
+    // --- Helper Methods ---
 
+    /**
+     * Rotates the polygon based on the current rotation angle.
+     */
     private void rotatePolygon() {
         double radians = Math.toRadians(rotationAngle);
         double cosTheta = Math.cos(radians);
@@ -235,6 +317,9 @@ public class Shape implements Serializable {
         y = centroidY;
     }
 
+    /**
+     * Updates the centroid of the polygon based on its points.
+     */
     private void updateCentroid() {
         double sumX = 0, sumY = 0;
         for (int i = 0; i < pointCount; i++) {
@@ -245,6 +330,12 @@ public class Shape implements Serializable {
         this.y = sumY / pointCount;
     }
 
+    /**
+     * Converts a color to its HEX string representation.
+     *
+     * @param color The color to convert.
+     * @return The HEX string representation of the color.
+     */
     private String colorToHex(Color color) {
         return String.format("#%02X%02X%02X",
                 (int) (color.getRed() * 255),
@@ -252,6 +343,12 @@ public class Shape implements Serializable {
                 (int) (color.getBlue() * 255));
     }
 
+    /**
+     * Converts a HEX string representation of a color to a Color object.
+     *
+     * @param hex The HEX string representation of the color.
+     * @return The Color object.
+     */
     private Color hexToColor(String hex) {
         return Color.web(hex);
     }

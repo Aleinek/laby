@@ -1,9 +1,9 @@
 /**
- * GeometricEditor to aplikacja graficzna w Javie do rysowania i edycji figur geometrycznych
- * takich jak koła, prostokąty i wielokąty. Obsługuje zapisywanie/odczyt, zmianę koloru,
- * przesuwanie, skalowanie i obracanie figur.
+ * GeometricEditor is a Java graphical application for drawing and editing geometric shapes
+ * such as circles, rectangles, and polygons. It supports saving/loading, changing color,
+ * moving, scaling, and rotating shapes.
  *
- * Autor: Adam Kulwicki
+ * Author: Adam Kulwicki
  */
 
 import javafx.application.Application;
@@ -26,34 +26,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Główna klasa aplikacji GeometricEditor, która umożliwia rysowanie i edycję figur geometrycznych.
+ * The main class of the GeometricEditor application, which allows drawing and editing geometric shapes.
  */
 public class GeometricEditor extends Application {
 
-    private Canvas canvas; // Płótno do rysowania
-    private GraphicsContext gc; // Kontekst graficzny dla płótna
-    private ColorPicker colorPicker; // Wybór koloru figur
-    private String selectedShape = "Circle"; // Wybrany typ figury
-    private Text selectedShapeText; // Tekst informujący o wybranym typie figury
-    private List<Shape> shapes = new ArrayList<>(); // Lista wszystkich figur
-    private Shape activeShape = null; // Aktualnie wybrana figura
-    private double lastMouseX, lastMouseY; // Ostatnie położenie kursora
-    private boolean isDrawingPolygon = false; // Czy rysowany jest wielokąt
-    private List<Double> polygonXPoints = new ArrayList<>(); // Punkty X wielokąta
-    private List<Double> polygonYPoints = new ArrayList<>(); // Punkty Y wielokąta
-    private Button finishPolygonButton; // Przycisk do zakończenia rysowania wielokąta
+    /** Canvas for drawing */
+    private Canvas canvas;
+
+    /** Graphics context for the canvas */
+    private GraphicsContext gc;
+
+    /** Shape color picker */
+    private ColorPicker colorPicker;
+
+    /** Selected shape type */
+    private String selectedShape = "Circle";
+
+    /** Text displaying the selected shape type */
+    private Text selectedShapeText;
+
+    /** List of all shapes */
+    private List<Shape> shapes = new ArrayList<>();
+
+    /** Currently selected shape */
+    private Shape activeShape = null;
+
+    /** Last cursor position */
+    private double lastMouseX, lastMouseY;
+
+    /** Indicates whether a polygon is being drawn */
+    private boolean isDrawingPolygon = false;
+
+    /** X coordinates of the polygon */
+    private List<Double> polygonXPoints = new ArrayList<>();
+
+    /** Y coordinates of the polygon */
+    private List<Double> polygonYPoints = new ArrayList<>();
+
+    /** Button for finishing polygon drawing */
+    private Button finishPolygonButton;
 
     /**
-     * Główna metoda aplikacji.
-     * @param args Argumenty wejściowe aplikacji
+     * Default constructor for the GeometricEditor class.
+     * Initializes the application by setting up necessary resources and configurations.
+     */
+    public GeometricEditor() {
+        super();
+    }
+
+    /**
+     * The main method of the application.
+     *
+     * @param args Input arguments for the application
      */
     public static void main(String[] args) {
         launch(args);
     }
 
     /**
-     * Inicjalizuje interfejs użytkownika i obsługę zdarzeń.
-     * @param primaryStage Główna scena aplikacji
+     * Initializes the user interface and event handling.
+     *
+     * @param primaryStage The main stage of the application
      */
     @Override
     public void start(Stage primaryStage) {
@@ -84,9 +117,10 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Tworzy pasek menu aplikacji.
-     * @param primaryStage Główna scena aplikacji
-     * @return Pasek menu aplikacji
+     * Creates the application's menu bar.
+     *
+     * @param primaryStage The main stage of the application
+     * @return The application's menu bar
      */
     private MenuBar createMenuBar(Stage primaryStage) {
         MenuBar menuBar = new MenuBar();
@@ -132,8 +166,9 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Tworzy panel z narzędziami po lewej stronie.
-     * @return Panel z narzędziami
+     * Creates the tools panel on the left side.
+     *
+     * @return The tools panel
      */
     private VBox createLeftPanel() {
         VBox leftPanel = new VBox();
@@ -154,8 +189,9 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Obsługuje wciśnięcie klawisza na klawiaturze.
-     * @param event Zdarzenie wciśnięcia klawisza
+     * Handles key press events.
+     *
+     * @param event The key press event
      */
     private void onKeyPressed(KeyEvent event) {
         if (activeShape != null && ("Rectangle".equals(activeShape.getType()) || "Polygon".equals(activeShape.getType()))) {
@@ -174,7 +210,7 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Tworzy menu kontekstowe dla figur.
+     * Creates a context menu for shapes.
      */
     private void createContextMenuForShapes() {
         ContextMenu contextMenu = new ContextMenu();
@@ -208,8 +244,9 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Obsługuje kliknięcie myszy - rysowanie lub wybieranie figur.
-     * @param e Zdarzenie kliknięcia myszy
+     * Handles mouse press events for drawing or selecting shapes.
+     *
+     * @param e The mouse press event
      */
     private void onMousePressed(MouseEvent e) {
         if (isDrawingPolygon && "Polygon".equals(selectedShape)) {
@@ -254,8 +291,9 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Obsługuje przeciąganie myszy - przesuwanie figury.
-     * @param e Zdarzenie przeciągania myszy
+     * Handles mouse drag events for moving shapes.
+     *
+     * @param e The mouse drag event
      */
     private void onMouseDragged(MouseEvent e) {
         if (activeShape != null) {
@@ -269,8 +307,9 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Obsługuje scrollowanie - zmiana rozmiaru figury.
-     * @param e Zdarzenie scrollowania
+     * Handles scroll events for resizing shapes.
+     *
+     * @param e The scroll event
      */
     private void onScroll(ScrollEvent e) {
         if (activeShape != null) {
@@ -281,7 +320,7 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Finalizuje rysowanie wielokąta.
+     * Finalizes polygon drawing.
      */
     private void finishPolygon() {
         if (polygonXPoints.size() >= 3) {
@@ -295,7 +334,7 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Czyści dane tymczasowe wielokąta.
+     * Clears temporary data for polygon drawing.
      */
     private void resetPolygonDrawing() {
         isDrawingPolygon = false;
@@ -305,7 +344,7 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Rysuje wszystkie figury na płótnie.
+     * Draws all shapes on the canvas.
      */
     private void redrawShapes() {
         gc.setFill(Color.WHITE);
@@ -360,26 +399,27 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Aktualizuje napis o wybranym typie figury.
+     * Updates the text showing the selected shape type.
      */
     private void updateSelectedShapeText() {
         selectedShapeText.setText("Selected Shape: " + selectedShape);
     }
 
     /**
-     * Wyświetla okno pomocy.
+     * Displays the help dialog.
      */
     private void showHelpDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About Geometric Editor");
         alert.setHeaderText("Simple Geometric Editor");
-        alert.setContentText("Autor: Adam Kulwicki\nCel: Rysowanie i modyfikowanie figur geometrycznych.");
+        alert.setContentText("Author: Adam Kulwicki\nPurpose: Drawing and modifying geometric shapes.");
         alert.showAndWait();
     }
 
     /**
-     * Zapisuje figury do pliku.
-     * @param stage Główna scena aplikacji
+     * Saves shapes to a file.
+     *
+     * @param stage The main stage of the application
      */
     private void saveShapes(Stage stage) {
         FileChooser fileChooser = new FileChooser();
@@ -402,8 +442,9 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Wczytuje figury z pliku.
-     * @param stage Główna scena aplikacji
+     * Loads shapes from a file.
+     *
+     * @param stage The main stage of the application
      */
     @SuppressWarnings("unchecked")
     private void loadShapes(Stage stage) {
