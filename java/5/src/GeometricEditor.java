@@ -25,29 +25,35 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Główna klasa aplikacji GeometricEditor, która umożliwia rysowanie i edycję figur geometrycznych.
+ */
 public class GeometricEditor extends Application {
 
-    private Canvas canvas;
-    private GraphicsContext gc;
-    private ColorPicker colorPicker;
-    private String selectedShape = "Circle";
-    private Text selectedShapeText;
-    private List<Shape> shapes = new ArrayList<>();
-    private Shape activeShape = null;
-    private double lastMouseX, lastMouseY;
+    private Canvas canvas; // Płótno do rysowania
+    private GraphicsContext gc; // Kontekst graficzny dla płótna
+    private ColorPicker colorPicker; // Wybór koloru figur
+    private String selectedShape = "Circle"; // Wybrany typ figury
+    private Text selectedShapeText; // Tekst informujący o wybranym typie figury
+    private List<Shape> shapes = new ArrayList<>(); // Lista wszystkich figur
+    private Shape activeShape = null; // Aktualnie wybrana figura
+    private double lastMouseX, lastMouseY; // Ostatnie położenie kursora
+    private boolean isDrawingPolygon = false; // Czy rysowany jest wielokąt
+    private List<Double> polygonXPoints = new ArrayList<>(); // Punkty X wielokąta
+    private List<Double> polygonYPoints = new ArrayList<>(); // Punkty Y wielokąta
+    private Button finishPolygonButton; // Przycisk do zakończenia rysowania wielokąta
 
-    // Zmienna do rysowania wielokąta
-    private boolean isDrawingPolygon = false;
-    private List<Double> polygonXPoints = new ArrayList<>();
-    private List<Double> polygonYPoints = new ArrayList<>();
-    private Button finishPolygonButton;
-
+    /**
+     * Główna metoda aplikacji.
+     * @param args Argumenty wejściowe aplikacji
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
     /**
-     * Inicjalizuje UI i obsługę zdarzeń.
+     * Inicjalizuje interfejs użytkownika i obsługę zdarzeń.
+     * @param primaryStage Główna scena aplikacji
      */
     @Override
     public void start(Stage primaryStage) {
@@ -77,7 +83,11 @@ public class GeometricEditor extends Application {
         primaryStage.show();
     }
 
-    /** Tworzy menu aplikacji */
+    /**
+     * Tworzy pasek menu aplikacji.
+     * @param primaryStage Główna scena aplikacji
+     * @return Pasek menu aplikacji
+     */
     private MenuBar createMenuBar(Stage primaryStage) {
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("File");
@@ -121,7 +131,10 @@ public class GeometricEditor extends Application {
         return menuBar;
     }
 
-    /** Tworzy panel z narzędziami po lewej stronie */
+    /**
+     * Tworzy panel z narzędziami po lewej stronie.
+     * @return Panel z narzędziami
+     */
     private VBox createLeftPanel() {
         VBox leftPanel = new VBox();
         leftPanel.setSpacing(10);
@@ -140,7 +153,10 @@ public class GeometricEditor extends Application {
         return leftPanel;
     }
 
-    /** Reaguje na kliknięcie klawiszy - do obracania */
+    /**
+     * Obsługuje wciśnięcie klawisza na klawiaturze.
+     * @param event Zdarzenie wciśnięcia klawisza
+     */
     private void onKeyPressed(KeyEvent event) {
         if (activeShape != null && ("Rectangle".equals(activeShape.getType()) || "Polygon".equals(activeShape.getType()))) {
             switch (event.getCode()) {
@@ -157,7 +173,9 @@ public class GeometricEditor extends Application {
         }
     }
 
-    /** Tworzy menu kontekstowe dla figur */
+    /**
+     * Tworzy menu kontekstowe dla figur.
+     */
     private void createContextMenuForShapes() {
         ContextMenu contextMenu = new ContextMenu();
 
@@ -189,7 +207,10 @@ public class GeometricEditor extends Application {
         });
     }
 
-    /** Obsługa kliknięcia myszy - rysowanie lub wybieranie figur */
+    /**
+     * Obsługuje kliknięcie myszy - rysowanie lub wybieranie figur.
+     * @param e Zdarzenie kliknięcia myszy
+     */
     private void onMousePressed(MouseEvent e) {
         if (isDrawingPolygon && "Polygon".equals(selectedShape)) {
             polygonXPoints.add(e.getX());
@@ -232,7 +253,10 @@ public class GeometricEditor extends Application {
         }
     }
 
-    /** Obsługa przeciągania myszy - przesuwanie figury */
+    /**
+     * Obsługuje przeciąganie myszy - przesuwanie figury.
+     * @param e Zdarzenie przeciągania myszy
+     */
     private void onMouseDragged(MouseEvent e) {
         if (activeShape != null) {
             double dx = e.getX() - lastMouseX;
@@ -244,7 +268,10 @@ public class GeometricEditor extends Application {
         }
     }
 
-    /** Obsługa scrolla - zmiana rozmiaru */
+    /**
+     * Obsługuje scrollowanie - zmiana rozmiaru figury.
+     * @param e Zdarzenie scrollowania
+     */
     private void onScroll(ScrollEvent e) {
         if (activeShape != null) {
             double scaleFactor = e.getDeltaY() < 0 ? 0.9 : 1.1;
@@ -253,7 +280,9 @@ public class GeometricEditor extends Application {
         }
     }
 
-    /** Finalizuje rysowanie wielokąta */
+    /**
+     * Finalizuje rysowanie wielokąta.
+     */
     private void finishPolygon() {
         if (polygonXPoints.size() >= 3) {
             double[] xPoints = polygonXPoints.stream().mapToDouble(Double::doubleValue).toArray();
@@ -265,7 +294,9 @@ public class GeometricEditor extends Application {
         redrawShapes();
     }
 
-    /** Czyści dane tymczasowe wielokąta */
+    /**
+     * Czyści dane tymczasowe wielokąta.
+     */
     private void resetPolygonDrawing() {
         isDrawingPolygon = false;
         polygonXPoints.clear();
@@ -273,7 +304,9 @@ public class GeometricEditor extends Application {
         if (finishPolygonButton != null) finishPolygonButton.setDisable(true);
     }
 
-    /** Rysuje wszystkie figury na canvasie */
+    /**
+     * Rysuje wszystkie figury na płótnie.
+     */
     private void redrawShapes() {
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -326,12 +359,16 @@ public class GeometricEditor extends Application {
         }
     }
 
-    /** Aktualizuje napis o wybranym typie figury */
+    /**
+     * Aktualizuje napis o wybranym typie figury.
+     */
     private void updateSelectedShapeText() {
         selectedShapeText.setText("Selected Shape: " + selectedShape);
     }
 
-    /** Pokazuje okno pomocy */
+    /**
+     * Wyświetla okno pomocy.
+     */
     private void showHelpDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About Geometric Editor");
@@ -340,9 +377,10 @@ public class GeometricEditor extends Application {
         alert.showAndWait();
     }
 
-    /*
-    * Zapisuje figury do pliku 
-    */
+    /**
+     * Zapisuje figury do pliku.
+     * @param stage Główna scena aplikacji
+     */
     private void saveShapes(Stage stage) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Shapes");
@@ -363,7 +401,10 @@ public class GeometricEditor extends Application {
         }
     }
 
-    /** Wczytuje figury z pliku */
+    /**
+     * Wczytuje figury z pliku.
+     * @param stage Główna scena aplikacji
+     */
     @SuppressWarnings("unchecked")
     private void loadShapes(Stage stage) {
         FileChooser fileChooser = new FileChooser();

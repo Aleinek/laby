@@ -8,19 +8,18 @@ import java.io.Serializable;
 public class Shape implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String type;
-    private double x, y;
-    private double width, height;
-    private double[] xPoints, yPoints;
-    private double[] originalXPoints, originalYPoints;
-    private int pointCount;
-    private String colorHex;
-    private double rotationAngle = 0.0;
+    private String type; // Typ figury (Circle, Rectangle, Polygon)
+    private double x, y; // Środek figury
+    private double width, height; // Szerokość i wysokość figury
+    private double[] xPoints, yPoints; // Punkty X i Y (dla wielokątów)
+    private double[] originalXPoints, originalYPoints; // Oryginalne punkty wielokąta
+    private int pointCount; // Liczba punktów wielokąta
+    private String colorHex; // Kolor figury w formacie HEX
+    private double rotationAngle = 0.0; // Kąt obrotu figury
 
     /**
      * Konstruktor figury koła lub prostokąta.
-     * 
-     * @param type Typ figury ("Circle" lub "Rectangle")
+     * @param type Typ figury (Circle lub Rectangle)
      * @param x Współrzędna X środka
      * @param y Współrzędna Y środka
      * @param width Szerokość figury
@@ -38,8 +37,7 @@ public class Shape implements Serializable {
 
     /**
      * Konstruktor figury typu wielokąt.
-     * 
-     * @param type Typ figury ("Polygon")
+     * @param type Typ figury (Polygon)
      * @param xPoints Tablica współrzędnych X punktów
      * @param yPoints Tablica współrzędnych Y punktów
      * @param pointCount Liczba punktów
@@ -110,7 +108,6 @@ public class Shape implements Serializable {
 
     /**
      * Ustawia kąt obrotu figury.
-     * 
      * @param angle Kąt w stopniach
      */
     public void setRotationAngle(double angle) {
@@ -122,7 +119,6 @@ public class Shape implements Serializable {
 
     /**
      * Sprawdza, czy punkt znajduje się wewnątrz figury.
-     * 
      * @param px Współrzędna X punktu
      * @param py Współrzędna Y punktu
      * @return true jeśli punkt znajduje się wewnątrz, w przeciwnym razie false
@@ -149,13 +145,13 @@ public class Shape implements Serializable {
                     }
                 }
                 return inside;
+            default:
+                return false;
         }
-        return false;
     }
 
     /**
      * Przesuwa figurę o podany wektor.
-     * 
      * @param dx Przesunięcie w osi X
      * @param dy Przesunięcie w osi Y
      */
@@ -181,7 +177,6 @@ public class Shape implements Serializable {
 
     /**
      * Skaluje figurę według współczynnika.
-     * 
      * @param scaleFactor Współczynnik skalowania
      */
     public void resize(double scaleFactor) {
@@ -207,7 +202,6 @@ public class Shape implements Serializable {
 
     /**
      * Ustawia kolor figury.
-     * 
      * @param color Nowy kolor
      */
     public void setColor(Color color) {
