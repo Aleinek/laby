@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
@@ -123,47 +124,64 @@ public class GeometricEditor extends Application {
         createContextMenuForShapes();
 
         Scene scene = new Scene(root, 1920, 1080);
+        scene.setOnKeyPressed(this::onKeyPressed); // Add key press listener for rotation
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private void createContextMenuForShapes() {
-    ContextMenu contextMenu = new ContextMenu();
-
-    // Opcja zmiany koloru
-    MenuItem changeColorItem = new MenuItem("Zmień kolor");
-    changeColorItem.setOnAction(e -> {
-        if (activeShape != null) {
-            Color newColor = colorPicker.getValue(); // Pobierz kolor z ColorPicker
-            activeShape.setColor(newColor); // Zmień kolor aktywnej figury
-            redrawShapes(); // Odśwież rysowanie
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano żadnej figury!", ButtonType.OK);
-            alert.showAndWait();
+    private void onKeyPressed(KeyEvent event) {
+        if (activeShape != null && "Rectangle".equals(activeShape.getType())) {
+            switch (event.getCode()) {
+                case LEFT: // Rotate left (decrease angle)
+                    activeShape.setRotationAngle(activeShape.getRotationAngle() - 5);
+                    break;
+                case RIGHT: // Rotate right (increase angle)
+                    activeShape.setRotationAngle(activeShape.getRotationAngle() + 5);
+                    break;
+                default:
+                    break;
+            }
+            redrawShapes(); // Refresh canvas
         }
-    });
+    }
 
-    // Opcja usunięcia figury
-    MenuItem deleteShapeItem = new MenuItem("Usuń figurę");
+    private void createContextMenuForShapes() {
+        ContextMenu contextMenu = new ContextMenu();
+
+        // Option to change color
+        MenuItem changeColorItem = new MenuItem("Change Color");
+        changeColorItem.setOnAction(e -> {
+            if (activeShape != null) {
+                Color newColor = colorPicker.getValue(); // Get color from ColorPicker
+                activeShape.setColor(newColor); // Update active shape color
+                redrawShapes(); // Refresh canvas
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "No shape selected!", ButtonType.OK);
+                alert.showAndWait();
+            }
+        });
+
+        // Option to delete a shape
+        MenuItem deleteShapeItem = new MenuItem("Delete Shape");
         deleteShapeItem.setOnAction(e -> {
             if (activeShape != null) {
-                shapes.remove(activeShape); // Usuń aktywną figurę z listy
-                activeShape = null; // Wyzeruj aktywną figurę
-                redrawShapes(); // Odśwież rysowanie
+                shapes.remove(activeShape); // Remove active shape
+                activeShape = null; // Reset active shape
+                redrawShapes(); // Refresh canvas
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Nie wybrano żadnej figury!", ButtonType.OK);
+                Alert alert = new Alert(Alert.AlertType.WARNING, "No shape selected!", ButtonType.OK);
                 alert.showAndWait();
             }
         });
 
         contextMenu.getItems().addAll(changeColorItem, deleteShapeItem);
 
-        // Dodajemy zdarzenie do wyświetlania menu kontekstowego
+        // Add event for showing context menu
         canvas.setOnMousePressed(event -> {
-            if (event.isSecondaryButtonDown()) { // Kliknięcie prawym przyciskiem myszy
+            if (event.isSecondaryButtonDown()) { // Right-click
                 contextMenu.show(canvas, event.getScreenX(), event.getScreenY());
             } else {
-                contextMenu.hide(); // Ukryj menu, jeśli kliknięto innym przyciskiem
+                contextMenu.hide(); // Hide menu for other clicks
             }
         });
     }
@@ -213,13 +231,13 @@ public class GeometricEditor extends Application {
 
     private void onMousePressed(MouseEvent e) {
         if (isDrawingPolygon && "Polygon".equals(selectedShape)) {
-            // Dodawanie punktów do wielokąta
+            // Add points to polygon
             polygonXPoints.add(e.getX());
             polygonYPoints.add(e.getY());
-            activeShape = null; // Ustaw aktywną figurę na null podczas rysowania wierzchołków
+            activeShape = null; // Set active shape to null while drawing vertices
             redrawShapes();
         } else {
-            // Obsługa rysowania innych figur
+            // Handle other shapes
             lastMouseX = e.getX();
             lastMouseY = e.getY();
             boolean shapeClicked = false;
@@ -311,7 +329,11 @@ public class GeometricEditor extends Application {
                     gc.fillOval(shape.getX() - shape.getWidth() / 2.0, shape.getY() - shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
                     break;
                 case "Rectangle":
-                    gc.fillRect(shape.getX() - shape.getWidth() / 2.0, shape.getY() - shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
+                    gc.save(); // Save the current transform
+                    gc.translate(shape.getX(), shape.getY()); // Translate to the center of the rectangle
+                    gc.rotate(shape.getRotationAngle()); // Rotate the canvas
+                    gc.fillRect(-shape.getWidth() / 2.0, -shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
+                    gc.restore(); // Restore the transform
                     break;
                 case "Polygon":
                     gc.fillPolygon(shape.getXPoints(), shape.getYPoints(), shape.getPointCount());
@@ -326,7 +348,11 @@ public class GeometricEditor extends Application {
                         gc.strokeOval(shape.getX() - shape.getWidth() / 2.0, shape.getY() - shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
                         break;
                     case "Rectangle":
-                        gc.strokeRect(shape.getX() - shape.getWidth() / 2.0, shape.getY() - shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
+                        gc.save();
+                        gc.translate(shape.getX(), shape.getY());
+                        gc.rotate(shape.getRotationAngle());
+                        gc.strokeRect(-shape.getWidth() / 2.0, -shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
+                        gc.restore();
                         break;
                     case "Polygon":
                         gc.strokePolygon(shape.getXPoints(), shape.getYPoints(), shape.getPointCount());

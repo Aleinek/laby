@@ -32,7 +32,7 @@ public class Shape implements Serializable {
         this.colorHex = colorToHex(color);
     }
 
-    // Getters
+    // Getters and setters
     public String getType() {
         return type;
     }
@@ -73,6 +73,10 @@ public class Shape implements Serializable {
         return rotationAngle;
     }
 
+    public void setRotationAngle(double angle) {
+        this.rotationAngle = angle % 360; // Keep it within 0-360 degrees
+    }
+
     // Contains method to check if a point is inside the shape
     public boolean contains(double px, double py) {
         switch (type) {
@@ -82,14 +86,16 @@ public class Shape implements Serializable {
                 double centerY = y;
                 return Math.pow(px - centerX, 2) + Math.pow(py - centerY, 2) <= Math.pow(radius, 2);
             case "Rectangle":
-                // Simplified rectangle contains logic, doesn't account for rotation
                 double halfWidth = width / 2.0;
                 double halfHeight = height / 2.0;
-                double minX = x - halfWidth;
-                double maxX = x + halfWidth;
-                double minY = y - halfHeight;
-                double maxY = y + halfHeight;
-                return px >= minX && px <= maxX && py >= minY && py <= maxY;
+
+                // Translate point to rectangle's local coordinates
+                double cosTheta = Math.cos(Math.toRadians(rotationAngle));
+                double sinTheta = Math.sin(Math.toRadians(rotationAngle));
+                double localX = cosTheta * (px - x) + sinTheta * (py - y);
+                double localY = -sinTheta * (px - x) + cosTheta * (py - y);
+
+                return localX >= -halfWidth && localX <= halfWidth && localY >= -halfHeight && localY <= halfHeight;
             case "Polygon":
                 // Use point-in-polygon algorithm (simplified for convex polygons)
                 boolean inside = false;
@@ -148,10 +154,11 @@ public class Shape implements Serializable {
         }
     }
 
+    // setColor method to change the color of the shape
     public void setColor(Color color) {
         this.colorHex = colorToHex(color);
     }
-
+    
     // Convert Color to Hex String
     private String colorToHex(Color color) {
         return String.format("#%02X%02X%02X",
