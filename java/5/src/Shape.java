@@ -1,7 +1,10 @@
 import javafx.scene.paint.Color;
-
 import java.io.Serializable;
 
+/**
+ * Reprezentuje ogólną figurę geometryczną (koło, prostokąt lub wielokąt).
+ * Obsługuje rysowanie, przesuwanie, skalowanie oraz obrót figury.
+ */
 public class Shape implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -11,10 +14,19 @@ public class Shape implements Serializable {
     private double[] xPoints, yPoints;
     private double[] originalXPoints, originalYPoints;
     private int pointCount;
-    private String colorHex; // Store color as a hex string for serialization
-    private double rotationAngle = 0.0; // Rotation angle in degrees
+    private String colorHex;
+    private double rotationAngle = 0.0;
 
-    // Constructor for Circle and Rectangle
+    /**
+     * Konstruktor figury koła lub prostokąta.
+     * 
+     * @param type Typ figury ("Circle" lub "Rectangle")
+     * @param x Współrzędna X środka
+     * @param y Współrzędna Y środka
+     * @param width Szerokość figury
+     * @param height Wysokość figury
+     * @param color Kolor figury
+     */
     public Shape(String type, double x, double y, double width, double height, Color color) {
         this.type = type;
         this.x = x;
@@ -24,7 +36,15 @@ public class Shape implements Serializable {
         this.colorHex = colorToHex(color);
     }
 
-    // Constructor for Polygon
+    /**
+     * Konstruktor figury typu wielokąt.
+     * 
+     * @param type Typ figury ("Polygon")
+     * @param xPoints Tablica współrzędnych X punktów
+     * @param yPoints Tablica współrzędnych Y punktów
+     * @param pointCount Liczba punktów
+     * @param color Kolor figury
+     */
     public Shape(String type, double[] xPoints, double[] yPoints, int pointCount, Color color) {
         this.type = type;
         this.xPoints = xPoints.clone();
@@ -36,53 +56,77 @@ public class Shape implements Serializable {
         updateCentroid();
     }
 
+    // --- Gettery i Settery z Javadoc ---
+
+    /** @return Typ figury */
     public String getType() {
         return type;
     }
 
+    /** @return Współrzędna X środka figury */
     public double getX() {
         return x;
     }
 
+    /** @return Współrzędna Y środka figury */
     public double getY() {
         return y;
     }
 
+    /** @return Szerokość figury */
     public double getWidth() {
         return width;
     }
 
+    /** @return Wysokość figury */
     public double getHeight() {
         return height;
     }
 
+    /** @return Tablica współrzędnych X punktów figury (dla wielokąta) */
     public double[] getXPoints() {
         return xPoints;
     }
 
+    /** @return Tablica współrzędnych Y punktów figury (dla wielokąta) */
     public double[] getYPoints() {
         return yPoints;
     }
 
+    /** @return Liczba punktów figury (dla wielokąta) */
     public int getPointCount() {
         return pointCount;
     }
 
+    /** @return Kolor figury */
     public Color getColor() {
         return hexToColor(colorHex);
     }
 
+    /** @return Kąt obrotu figury */
     public double getRotationAngle() {
         return rotationAngle;
     }
 
+    /**
+     * Ustawia kąt obrotu figury.
+     * 
+     * @param angle Kąt w stopniach
+     */
     public void setRotationAngle(double angle) {
-        this.rotationAngle = angle % 360; // Keep it within 0-360 degrees
+        this.rotationAngle = angle % 360;
         if ("Polygon".equals(type)) {
             rotatePolygon();
         }
     }
 
+    /**
+     * Sprawdza, czy punkt znajduje się wewnątrz figury.
+     * 
+     * @param px Współrzędna X punktu
+     * @param py Współrzędna Y punktu
+     * @return true jeśli punkt znajduje się wewnątrz, w przeciwnym razie false
+     */
     public boolean contains(double px, double py) {
         switch (type) {
             case "Circle":
@@ -109,6 +153,12 @@ public class Shape implements Serializable {
         return false;
     }
 
+    /**
+     * Przesuwa figurę o podany wektor.
+     * 
+     * @param dx Przesunięcie w osi X
+     * @param dy Przesunięcie w osi Y
+     */
     public void move(double dx, double dy) {
         switch (type) {
             case "Circle":
@@ -129,6 +179,11 @@ public class Shape implements Serializable {
         }
     }
 
+    /**
+     * Skaluje figurę według współczynnika.
+     * 
+     * @param scaleFactor Współczynnik skalowania
+     */
     public void resize(double scaleFactor) {
         switch (type) {
             case "Circle":
@@ -145,17 +200,27 @@ public class Shape implements Serializable {
                     originalXPoints[i] = x + dx * scaleFactor;
                     originalYPoints[i] = y + dy * scaleFactor;
                 }
-                rotatePolygon(); // Reapply current rotation
+                rotatePolygon();
                 break;
         }
     }
+
+    /**
+     * Ustawia kolor figury.
+     * 
+     * @param color Nowy kolor
+     */
+    public void setColor(Color color) {
+        this.colorHex = colorToHex(color);
+    }
+
+    // --- Metody pomocnicze ---
 
     private void rotatePolygon() {
         double radians = Math.toRadians(rotationAngle);
         double cosTheta = Math.cos(radians);
         double sinTheta = Math.sin(radians);
 
-        // Oblicz środek ciężkości z oryginalnych punktów
         double centroidX = 0;
         double centroidY = 0;
         for (int i = 0; i < pointCount; i++) {
@@ -184,10 +249,6 @@ public class Shape implements Serializable {
         }
         this.x = sumX / pointCount;
         this.y = sumY / pointCount;
-    }
-
-    public void setColor(Color color) {
-        this.colorHex = colorToHex(color);
     }
 
     private String colorToHex(Color color) {
