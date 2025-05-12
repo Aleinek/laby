@@ -27,6 +27,12 @@ public class GeometricEditor extends Application {
     private Shape activeShape = null; // Currently selected shape for modification
     private double lastMouseX, lastMouseY; // Variables to track mouse movement
 
+    // New fields for polygon drawing
+    private boolean isDrawingPolygon = false; // Indicates polygon drawing mode
+    private List<Double> polygonXPoints = new ArrayList<>();
+    private List<Double> polygonYPoints = new ArrayList<>();
+    private Button finishPolygonButton; // Button to finish polygon drawing
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -68,13 +74,19 @@ public class GeometricEditor extends Application {
         circleItem.setOnAction(e -> {
             selectedShape = "Circle";
             updateSelectedShapeText();
+            resetPolygonDrawing();
         });
         rectangleItem.setOnAction(e -> {
             selectedShape = "Rectangle";
             updateSelectedShapeText();
+            resetPolygonDrawing();
         });
         polygonItem.setOnAction(e -> {
             selectedShape = "Polygon";
+            isDrawingPolygon = true;
+            polygonXPoints.clear();
+            polygonYPoints.clear();
+            finishPolygonButton.setDisable(false);
             updateSelectedShapeText();
         });
 
@@ -102,7 +114,12 @@ public class GeometricEditor extends Application {
         selectedShapeText = new Text("Selected Shape: Circle");
         updateSelectedShapeText();
 
-        leftPanel.getChildren().addAll(colorLabel, colorPicker, selectedShapeText);
+        // Button to finish polygon drawing
+        finishPolygonButton = new Button("Finish Polygon");
+        finishPolygonButton.setDisable(true);
+        finishPolygonButton.setOnAction(e -> finishPolygon());
+
+        leftPanel.getChildren().addAll(colorLabel, colorPicker, selectedShapeText, finishPolygonButton);
 
         // Event handling for drawing, selecting, and resizing shapes
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onMousePressed);
@@ -151,13 +168,6 @@ public class GeometricEditor extends Application {
         File file = fileChooser.showOpenDialog(stage);
 
         if (file != null) {
-            // Verify the file has the correct extension
-            if (!file.getName().endsWith(".shapes")) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid file type. Please select a '.shapes' file.", ButtonType.OK);
-                alert.showAndWait();
-                return;
-            }
-
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
                 shapes = (List<Shape>) ois.readObject();
                 activeShape = null; // Clear active shape
@@ -172,45 +182,45 @@ public class GeometricEditor extends Application {
     }
 
     private void onMousePressed(MouseEvent e) {
-        lastMouseX = e.getX();
-        lastMouseY = e.getY();
-
-        // Check if a shape is clicked
-        boolean shapeClicked = false;
-        for (Shape shape : shapes) {
-            if (shape.contains(lastMouseX, lastMouseY)) {
-                activeShape = shape;
-                shapeClicked = true;
-                break;
+        if (isDrawingPolygon && "Polygon".equals(selectedShape)) {
+            // Add points to the polygon
+            polygonXPoints.add(e.getX());
+            polygonYPoints.add(e.getY());
+            redrawShapes();
+        } else {
+            // Handle other shape drawing
+            lastMouseX = e.getX();
+            lastMouseY = e.getY();
+            boolean shapeClicked = false;
+            for (Shape shape : shapes) {
+                if (shape.contains(lastMouseX, lastMouseY)) {
+                    activeShape = shape;
+                    shapeClicked = true;
+                    break;
+                }
             }
+
+            if (!shapeClicked) {
+                gc.setFill(colorPicker.getValue());
+                Shape shape = null;
+
+                switch (selectedShape) {
+                    case "Circle":
+                        shape = new Shape("Circle", lastMouseX, lastMouseY, 50, 50, colorPicker.getValue());
+                        break;
+                    case "Rectangle":
+                        shape = new Shape("Rectangle", lastMouseX, lastMouseY, 80, 40, colorPicker.getValue());
+                        break;
+                }
+
+                if (shape != null) {
+                    shapes.add(shape);
+                    activeShape = shape;
+                }
+            }
+
+            redrawShapes();
         }
-
-        // If no shape is clicked, create a new shape
-        if (!shapeClicked) {
-            gc.setFill(colorPicker.getValue());
-            Shape shape = null;
-
-            switch (selectedShape) {
-                case "Circle":
-                    shape = new Shape("Circle", lastMouseX, lastMouseY, 50, 50, colorPicker.getValue());
-                    break;
-                case "Rectangle":
-                    shape = new Shape("Rectangle", lastMouseX, lastMouseY, 80, 40, colorPicker.getValue());
-                    break;
-                case "Polygon":
-                    double[] xPoints = {lastMouseX, lastMouseX + 20, lastMouseX - 20};
-                    double[] yPoints = {lastMouseY, lastMouseY + 30, lastMouseY + 30};
-                    shape = new Shape("Polygon", xPoints, yPoints, 3, colorPicker.getValue());
-                    break;
-            }
-
-            if (shape != null) {
-                shapes.add(shape);
-                activeShape = shape;
-            }
-        }
-
-        redrawShapes();
     }
 
     private void onMouseDragged(MouseEvent e) {
@@ -218,33 +228,43 @@ public class GeometricEditor extends Application {
             double dx = e.getX() - lastMouseX;
             double dy = e.getY() - lastMouseY;
 
-            // Move the active shape
             activeShape.move(dx, dy);
-
-            // Update the last mouse position
             lastMouseX = e.getX();
             lastMouseY = e.getY();
-
-            // Redraw the canvas
             redrawShapes();
         }
     }
 
     private void onScroll(ScrollEvent e) {
         if (activeShape != null) {
-            double scaleFactor = 0;
-            if (e.getDeltaY() > 0) {
-                scaleFactor = 1.1; // Zoom in
-            } else if (e.getDeltaY() < 0) {
+            double scaleFactor = 1;
+            if (e.getDeltaY() < 0) {
                 scaleFactor = 0.9; // Zoom out
+            } else if (e.getDeltaY() > 0) {
+                scaleFactor = 1.1; // Zoom in
             }
-            //System.out.println("Scale Factor: " + scaleFactor);
-
-            // Resize the active shape
             activeShape.resize(scaleFactor);
-
-            // Redraw shapes to reflect the changes
             redrawShapes();
+        }
+    }
+
+    private void finishPolygon() {
+        if (polygonXPoints.size() >= 3) {
+            double[] xPoints = polygonXPoints.stream().mapToDouble(Double::doubleValue).toArray();
+            double[] yPoints = polygonYPoints.stream().mapToDouble(Double::doubleValue).toArray();
+            Shape polygon = new Shape("Polygon", xPoints, yPoints, xPoints.length, colorPicker.getValue());
+            shapes.add(polygon);
+        }
+        resetPolygonDrawing();
+        redrawShapes();
+    }
+
+    private void resetPolygonDrawing() {
+        isDrawingPolygon = false;
+        polygonXPoints.clear();
+        polygonYPoints.clear();
+        if (finishPolygonButton != null) {
+            finishPolygonButton.setDisable(true);
         }
     }
 
@@ -266,7 +286,6 @@ public class GeometricEditor extends Application {
                     break;
             }
 
-            // Draw outline for active shape
             if (shape == activeShape) {
                 gc.setStroke(Color.RED);
                 gc.setLineWidth(2);
@@ -281,6 +300,14 @@ public class GeometricEditor extends Application {
                         gc.strokePolygon(shape.getXPoints(), shape.getYPoints(), shape.getPointCount());
                         break;
                 }
+            }
+        }
+
+        if (isDrawingPolygon) {
+            gc.setStroke(Color.GRAY);
+            gc.setLineWidth(1);
+            for (int i = 0; i < polygonXPoints.size() - 1; i++) {
+                gc.strokeLine(polygonXPoints.get(i), polygonYPoints.get(i), polygonXPoints.get(i + 1), polygonYPoints.get(i + 1));
             }
         }
     }
