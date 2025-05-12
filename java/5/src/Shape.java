@@ -11,6 +11,7 @@ public class Shape implements Serializable {
     private double[] xPoints, yPoints;
     private int pointCount;
     private String colorHex; // Store color as a hex string for serialization
+    private double rotationAngle = 0.0; // Rotation angle in degrees
 
     // Constructor for Circle and Rectangle
     public Shape(String type, double x, double y, double width, double height, Color color) {
@@ -68,21 +69,8 @@ public class Shape implements Serializable {
         return hexToColor(colorHex);
     }
 
-    // Setters for moving
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public void setXPoints(double[] xPoints) {
-        this.xPoints = xPoints;
-    }
-
-    public void setYPoints(double[] yPoints) {
-        this.yPoints = yPoints;
+    public double getRotationAngle() {
+        return rotationAngle;
     }
 
     // Contains method to check if a point is inside the shape
@@ -94,8 +82,14 @@ public class Shape implements Serializable {
                 double centerY = y;
                 return Math.pow(px - centerX, 2) + Math.pow(py - centerY, 2) <= Math.pow(radius, 2);
             case "Rectangle":
-                return px >= x - width / 2.0 && px <= x + width / 2.0 &&
-                        py >= y - height / 2.0 && py <= y + height / 2.0;
+                // Simplified rectangle contains logic, doesn't account for rotation
+                double halfWidth = width / 2.0;
+                double halfHeight = height / 2.0;
+                double minX = x - halfWidth;
+                double maxX = x + halfWidth;
+                double minY = y - halfHeight;
+                double maxY = y + halfHeight;
+                return px >= minX && px <= maxX && py >= minY && py <= maxY;
             case "Polygon":
                 // Use point-in-polygon algorithm (simplified for convex polygons)
                 boolean inside = false;
@@ -123,6 +117,31 @@ public class Shape implements Serializable {
                     for (int i = 0; i < xPoints.length; i++) {
                         xPoints[i] += dx;
                         yPoints[i] += dy;
+                    }
+                }
+                break;
+        }
+    }
+
+    // Resize method to scale the shape
+    public void resize(double scaleFactor) {
+        switch (type) {
+            case "Circle":
+            case "Rectangle":
+                // Ensure minimum width and height to avoid disappearing shapes
+                if (width * scaleFactor > 5 && height * scaleFactor > 5) { // Minimum size constraint
+                    width *= scaleFactor;
+                    height *= scaleFactor;
+                }
+                break;
+            case "Polygon":
+                if (xPoints != null && yPoints != null) {
+                    for (int i = 0; i < xPoints.length; i++) {
+                        // Scale each point relative to the center, ensure it doesn't collapse
+                        double dx = xPoints[i] - x;
+                        double dy = yPoints[i] - y;
+                        xPoints[i] = x + dx * scaleFactor;
+                        yPoints[i] = y + dy * scaleFactor;
                     }
                 }
                 break;
