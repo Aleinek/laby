@@ -329,6 +329,9 @@ public class GeometricEditor extends Application {
             Shape polygon = new Shape("Polygon", xPoints, yPoints, xPoints.length, colorPicker.getValue());
             shapes.add(polygon);
         }
+        selectedShape = "Circle";
+        updateSelectedShapeText();
+
         resetPolygonDrawing();
         redrawShapes();
     }
