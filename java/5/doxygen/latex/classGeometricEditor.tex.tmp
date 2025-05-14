@@ -1,0 +1,347 @@
+\doxysection{Geometric\+Editor Class Reference}
+\hypertarget{classGeometricEditor}{}\label{classGeometricEditor}\index{GeometricEditor@{GeometricEditor}}
+
+
+Inheritance diagram for Geometric\+Editor\+:
+% FIG 0
+
+
+Collaboration diagram for Geometric\+Editor\+:
+% FIG 1
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGeometricEditor_a42e5c244a250ce1e9081affe31dfa5da}{Geometric\+Editor}} ()
+\item 
+void \mbox{\hyperlink{classGeometricEditor_adacac742437e3aa2eedfb10f880ce89f}{start}} (Stage primary\+Stage)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classGeometricEditor_a647c18aed38ab49c8aae410883316f6e}{main}} (String\mbox{[}$\,$\mbox{]} args)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Menu\+Bar \mbox{\hyperlink{classGeometricEditor_abdc9bbcb1bb7901a39d772fa08fdcf1c}{create\+Menu\+Bar}} (Stage primary\+Stage)
+\item 
+VBox \mbox{\hyperlink{classGeometricEditor_afd53e25da3e636f1bdbd95a416010497}{create\+Left\+Panel}} ()
+\item 
+void \mbox{\hyperlink{classGeometricEditor_a2532fa63d5c7b6e6d7c6c1f868c0447d}{on\+Key\+Pressed}} (Key\+Event event)
+\item 
+void \mbox{\hyperlink{classGeometricEditor_abccb7f681fae2b1bfa21e0a1cbec4efb}{create\+Context\+Menu\+For\+Shapes}} ()
+\item 
+void \mbox{\hyperlink{classGeometricEditor_aacb104ce2d5038b8a89359e907fd2c1d}{on\+Mouse\+Pressed}} (Mouse\+Event e)
+\item 
+void \mbox{\hyperlink{classGeometricEditor_aeed63748282c75c909ef404c440aed5a}{on\+Mouse\+Dragged}} (Mouse\+Event e)
+\item 
+void \mbox{\hyperlink{classGeometricEditor_a6e5475beaca5319b7142a1e62a3b0974}{on\+Scroll}} (Scroll\+Event e)
+\item 
+void \mbox{\hyperlink{classGeometricEditor_a243f5015f6c33f60061bddedd426b9d1}{finish\+Polygon}} ()
+\item 
+void \mbox{\hyperlink{classGeometricEditor_a872919c1c7d156420f9fc68ab9111955}{reset\+Polygon\+Drawing}} ()
+\item 
+void \mbox{\hyperlink{classGeometricEditor_a07cce1a59ffb090f8b7127abb6a8933a}{redraw\+Shapes}} ()
+\item 
+void \mbox{\hyperlink{classGeometricEditor_af7baf56cdef7863fda27148026c39f08}{update\+Selected\+Shape\+Text}} ()
+\item 
+void \mbox{\hyperlink{classGeometricEditor_a317727167ded81c4179cebb9c345a3af}{show\+Help\+Dialog}} ()
+\item 
+void \mbox{\hyperlink{classGeometricEditor_a08aa7412e5d7c3bd5ba02be5ade7b3e0}{save\+Shapes}} (Stage stage)
+\item 
+void \mbox{\hyperlink{classGeometricEditor_aa503b9bd94eec1b87ea081d6d9c7ea24}{load\+Shapes}} (Stage stage)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Canvas \mbox{\hyperlink{classGeometricEditor_a4e7cf88aa45e4ba1223c02011b89c4d3}{canvas}}
+\item 
+Graphics\+Context \mbox{\hyperlink{classGeometricEditor_a2e3a4bc962d817c522a19b45e68c03e0}{gc}}
+\item 
+Color\+Picker \mbox{\hyperlink{classGeometricEditor_a232e2ca1325f757a392425b37eeaa513}{color\+Picker}}
+\item 
+String \mbox{\hyperlink{classGeometricEditor_a77a08d2499127ed882d2d03c304253d5}{selected\+Shape}} = "{}Circle"{}
+\item 
+Text \mbox{\hyperlink{classGeometricEditor_ac34ca26f08d74b7f68c507f9aca58b09}{selected\+Shape\+Text}}
+\item 
+List$<$ \mbox{\hyperlink{classShape}{Shape}} $>$ \mbox{\hyperlink{classGeometricEditor_afd174f4f1d7132d63675d4002cf9ac0b}{shapes}} = new Array\+List$<$$>$()
+\item 
+\mbox{\hyperlink{classShape}{Shape}} \mbox{\hyperlink{classGeometricEditor_aa6fbe0abbdaaaf18a8fdbfe2a939adff}{active\+Shape}} = null
+\item 
+double \mbox{\hyperlink{classGeometricEditor_a4c79c1f8bcab83c72a21c6055440b68a}{last\+MouseX}}
+\item 
+\Hypertarget{classGeometricEditor_a0084fa5021c66e6dec06759b0413a8cb}\label{classGeometricEditor_a0084fa5021c66e6dec06759b0413a8cb} 
+double {\bfseries last\+MouseY}
+\item 
+boolean \mbox{\hyperlink{classGeometricEditor_a04a8ab920d45ef8d0197a9be5c6dac33}{is\+Drawing\+Polygon}} = false
+\item 
+List$<$ Double $>$ \mbox{\hyperlink{classGeometricEditor_a685b569f912ea994d6085ee0c456717b}{polygon\+XPoints}} = new Array\+List$<$$>$()
+\item 
+List$<$ Double $>$ \mbox{\hyperlink{classGeometricEditor_aee851516a5d565d96894f9fdb2b05863}{polygon\+YPoints}} = new Array\+List$<$$>$()
+\item 
+Button \mbox{\hyperlink{classGeometricEditor_a3bcc8e143656845263b223a093c5bc1c}{finish\+Polygon\+Button}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classGeometricEditor}{Geometric\+Editor} is a Java graphical application for drawing and editing geometric shapes such as circles, rectangles, and polygons. It supports saving/loading, changing color, moving, scaling, and rotating shapes.
+
+Author\+: Adam Kulwicki The main class of the \doxylink{classGeometricEditor}{Geometric\+Editor} application, which allows drawing and editing geometric shapes. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classGeometricEditor_a42e5c244a250ce1e9081affe31dfa5da}\label{classGeometricEditor_a42e5c244a250ce1e9081affe31dfa5da} 
+\index{GeometricEditor@{GeometricEditor}!GeometricEditor@{GeometricEditor}}
+\index{GeometricEditor@{GeometricEditor}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{GeometricEditor()}{GeometricEditor()}}
+{\footnotesize\ttfamily Geometric\+Editor.\+Geometric\+Editor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Default constructor for the \doxylink{classGeometricEditor}{Geometric\+Editor} class. Initializes the application by setting up necessary resources and configurations. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGeometricEditor_abccb7f681fae2b1bfa21e0a1cbec4efb}\label{classGeometricEditor_abccb7f681fae2b1bfa21e0a1cbec4efb} 
+\index{GeometricEditor@{GeometricEditor}!createContextMenuForShapes@{createContextMenuForShapes}}
+\index{createContextMenuForShapes@{createContextMenuForShapes}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{createContextMenuForShapes()}{createContextMenuForShapes()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+create\+Context\+Menu\+For\+Shapes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Creates a context menu for shapes. \Hypertarget{classGeometricEditor_afd53e25da3e636f1bdbd95a416010497}\label{classGeometricEditor_afd53e25da3e636f1bdbd95a416010497} 
+\index{GeometricEditor@{GeometricEditor}!createLeftPanel@{createLeftPanel}}
+\index{createLeftPanel@{createLeftPanel}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{createLeftPanel()}{createLeftPanel()}}
+{\footnotesize\ttfamily VBox Geometric\+Editor.\+create\+Left\+Panel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Creates the tools panel on the left side.
+
+\begin{DoxyReturn}{Returns}
+The tools panel 
+\end{DoxyReturn}
+\Hypertarget{classGeometricEditor_abdc9bbcb1bb7901a39d772fa08fdcf1c}\label{classGeometricEditor_abdc9bbcb1bb7901a39d772fa08fdcf1c} 
+\index{GeometricEditor@{GeometricEditor}!createMenuBar@{createMenuBar}}
+\index{createMenuBar@{createMenuBar}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{createMenuBar()}{createMenuBar()}}
+{\footnotesize\ttfamily Menu\+Bar Geometric\+Editor.\+create\+Menu\+Bar (\begin{DoxyParamCaption}\item[{Stage}]{primary\+Stage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Creates the application\textquotesingle{}s menu bar.
+
+
+\begin{DoxyParams}{Parameters}
+{\em primary\+Stage} & The main stage of the application \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The application\textquotesingle{}s menu bar 
+\end{DoxyReturn}
+\Hypertarget{classGeometricEditor_a243f5015f6c33f60061bddedd426b9d1}\label{classGeometricEditor_a243f5015f6c33f60061bddedd426b9d1} 
+\index{GeometricEditor@{GeometricEditor}!finishPolygon@{finishPolygon}}
+\index{finishPolygon@{finishPolygon}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{finishPolygon()}{finishPolygon()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+finish\+Polygon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Finalizes polygon drawing. \Hypertarget{classGeometricEditor_aa503b9bd94eec1b87ea081d6d9c7ea24}\label{classGeometricEditor_aa503b9bd94eec1b87ea081d6d9c7ea24} 
+\index{GeometricEditor@{GeometricEditor}!loadShapes@{loadShapes}}
+\index{loadShapes@{loadShapes}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{loadShapes()}{loadShapes()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+load\+Shapes (\begin{DoxyParamCaption}\item[{Stage}]{stage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Loads shapes from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em stage} & The main stage of the application \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeometricEditor_a647c18aed38ab49c8aae410883316f6e}\label{classGeometricEditor_a647c18aed38ab49c8aae410883316f6e} 
+\index{GeometricEditor@{GeometricEditor}!main@{main}}
+\index{main@{main}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily static void Geometric\+Editor.\+main (\begin{DoxyParamCaption}\item[{String\mbox{[}$\,$\mbox{]}}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+The main method of the application.
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & Input arguments for the application \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeometricEditor_a2532fa63d5c7b6e6d7c6c1f868c0447d}\label{classGeometricEditor_a2532fa63d5c7b6e6d7c6c1f868c0447d} 
+\index{GeometricEditor@{GeometricEditor}!onKeyPressed@{onKeyPressed}}
+\index{onKeyPressed@{onKeyPressed}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{onKeyPressed()}{onKeyPressed()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+on\+Key\+Pressed (\begin{DoxyParamCaption}\item[{Key\+Event}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Handles key press events.
+
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The key press event \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeometricEditor_aeed63748282c75c909ef404c440aed5a}\label{classGeometricEditor_aeed63748282c75c909ef404c440aed5a} 
+\index{GeometricEditor@{GeometricEditor}!onMouseDragged@{onMouseDragged}}
+\index{onMouseDragged@{onMouseDragged}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{onMouseDragged()}{onMouseDragged()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+on\+Mouse\+Dragged (\begin{DoxyParamCaption}\item[{Mouse\+Event}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Handles mouse drag events for moving shapes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & The mouse drag event \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeometricEditor_aacb104ce2d5038b8a89359e907fd2c1d}\label{classGeometricEditor_aacb104ce2d5038b8a89359e907fd2c1d} 
+\index{GeometricEditor@{GeometricEditor}!onMousePressed@{onMousePressed}}
+\index{onMousePressed@{onMousePressed}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{onMousePressed()}{onMousePressed()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+on\+Mouse\+Pressed (\begin{DoxyParamCaption}\item[{Mouse\+Event}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Handles mouse press events for drawing or selecting shapes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & The mouse press event \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeometricEditor_a6e5475beaca5319b7142a1e62a3b0974}\label{classGeometricEditor_a6e5475beaca5319b7142a1e62a3b0974} 
+\index{GeometricEditor@{GeometricEditor}!onScroll@{onScroll}}
+\index{onScroll@{onScroll}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{onScroll()}{onScroll()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+on\+Scroll (\begin{DoxyParamCaption}\item[{Scroll\+Event}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Handles scroll events for resizing shapes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & The scroll event \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeometricEditor_a07cce1a59ffb090f8b7127abb6a8933a}\label{classGeometricEditor_a07cce1a59ffb090f8b7127abb6a8933a} 
+\index{GeometricEditor@{GeometricEditor}!redrawShapes@{redrawShapes}}
+\index{redrawShapes@{redrawShapes}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{redrawShapes()}{redrawShapes()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+redraw\+Shapes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Draws all shapes on the canvas. \Hypertarget{classGeometricEditor_a872919c1c7d156420f9fc68ab9111955}\label{classGeometricEditor_a872919c1c7d156420f9fc68ab9111955} 
+\index{GeometricEditor@{GeometricEditor}!resetPolygonDrawing@{resetPolygonDrawing}}
+\index{resetPolygonDrawing@{resetPolygonDrawing}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{resetPolygonDrawing()}{resetPolygonDrawing()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+reset\+Polygon\+Drawing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Clears temporary data for polygon drawing. \Hypertarget{classGeometricEditor_a08aa7412e5d7c3bd5ba02be5ade7b3e0}\label{classGeometricEditor_a08aa7412e5d7c3bd5ba02be5ade7b3e0} 
+\index{GeometricEditor@{GeometricEditor}!saveShapes@{saveShapes}}
+\index{saveShapes@{saveShapes}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{saveShapes()}{saveShapes()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+save\+Shapes (\begin{DoxyParamCaption}\item[{Stage}]{stage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Saves shapes to a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em stage} & The main stage of the application \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeometricEditor_a317727167ded81c4179cebb9c345a3af}\label{classGeometricEditor_a317727167ded81c4179cebb9c345a3af} 
+\index{GeometricEditor@{GeometricEditor}!showHelpDialog@{showHelpDialog}}
+\index{showHelpDialog@{showHelpDialog}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{showHelpDialog()}{showHelpDialog()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+show\+Help\+Dialog (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Displays the help dialog. \Hypertarget{classGeometricEditor_adacac742437e3aa2eedfb10f880ce89f}\label{classGeometricEditor_adacac742437e3aa2eedfb10f880ce89f} 
+\index{GeometricEditor@{GeometricEditor}!start@{start}}
+\index{start@{start}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+start (\begin{DoxyParamCaption}\item[{Stage}]{primary\+Stage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initializes the user interface and event handling.
+
+
+\begin{DoxyParams}{Parameters}
+{\em primary\+Stage} & The main stage of the application \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classGeometricEditor_af7baf56cdef7863fda27148026c39f08}\label{classGeometricEditor_af7baf56cdef7863fda27148026c39f08} 
+\index{GeometricEditor@{GeometricEditor}!updateSelectedShapeText@{updateSelectedShapeText}}
+\index{updateSelectedShapeText@{updateSelectedShapeText}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{updateSelectedShapeText()}{updateSelectedShapeText()}}
+{\footnotesize\ttfamily void Geometric\+Editor.\+update\+Selected\+Shape\+Text (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Updates the text showing the selected shape type. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classGeometricEditor_aa6fbe0abbdaaaf18a8fdbfe2a939adff}\label{classGeometricEditor_aa6fbe0abbdaaaf18a8fdbfe2a939adff} 
+\index{GeometricEditor@{GeometricEditor}!activeShape@{activeShape}}
+\index{activeShape@{activeShape}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{activeShape}{activeShape}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classShape}{Shape}} Geometric\+Editor.\+active\+Shape = null\hspace{0.3cm}{\ttfamily [private]}}
+
+Currently selected shape \Hypertarget{classGeometricEditor_a4e7cf88aa45e4ba1223c02011b89c4d3}\label{classGeometricEditor_a4e7cf88aa45e4ba1223c02011b89c4d3} 
+\index{GeometricEditor@{GeometricEditor}!canvas@{canvas}}
+\index{canvas@{canvas}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{canvas}{canvas}}
+{\footnotesize\ttfamily Canvas Geometric\+Editor.\+canvas\hspace{0.3cm}{\ttfamily [private]}}
+
+Canvas for drawing \Hypertarget{classGeometricEditor_a232e2ca1325f757a392425b37eeaa513}\label{classGeometricEditor_a232e2ca1325f757a392425b37eeaa513} 
+\index{GeometricEditor@{GeometricEditor}!colorPicker@{colorPicker}}
+\index{colorPicker@{colorPicker}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{colorPicker}{colorPicker}}
+{\footnotesize\ttfamily Color\+Picker Geometric\+Editor.\+color\+Picker\hspace{0.3cm}{\ttfamily [private]}}
+
+\doxylink{classShape}{Shape} color picker \Hypertarget{classGeometricEditor_a3bcc8e143656845263b223a093c5bc1c}\label{classGeometricEditor_a3bcc8e143656845263b223a093c5bc1c} 
+\index{GeometricEditor@{GeometricEditor}!finishPolygonButton@{finishPolygonButton}}
+\index{finishPolygonButton@{finishPolygonButton}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{finishPolygonButton}{finishPolygonButton}}
+{\footnotesize\ttfamily Button Geometric\+Editor.\+finish\+Polygon\+Button\hspace{0.3cm}{\ttfamily [private]}}
+
+Button for finishing polygon drawing \Hypertarget{classGeometricEditor_a2e3a4bc962d817c522a19b45e68c03e0}\label{classGeometricEditor_a2e3a4bc962d817c522a19b45e68c03e0} 
+\index{GeometricEditor@{GeometricEditor}!gc@{gc}}
+\index{gc@{gc}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{gc}{gc}}
+{\footnotesize\ttfamily Graphics\+Context Geometric\+Editor.\+gc\hspace{0.3cm}{\ttfamily [private]}}
+
+Graphics context for the canvas \Hypertarget{classGeometricEditor_a04a8ab920d45ef8d0197a9be5c6dac33}\label{classGeometricEditor_a04a8ab920d45ef8d0197a9be5c6dac33} 
+\index{GeometricEditor@{GeometricEditor}!isDrawingPolygon@{isDrawingPolygon}}
+\index{isDrawingPolygon@{isDrawingPolygon}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{isDrawingPolygon}{isDrawingPolygon}}
+{\footnotesize\ttfamily boolean Geometric\+Editor.\+is\+Drawing\+Polygon = false\hspace{0.3cm}{\ttfamily [private]}}
+
+Indicates whether a polygon is being drawn \Hypertarget{classGeometricEditor_a4c79c1f8bcab83c72a21c6055440b68a}\label{classGeometricEditor_a4c79c1f8bcab83c72a21c6055440b68a} 
+\index{GeometricEditor@{GeometricEditor}!lastMouseX@{lastMouseX}}
+\index{lastMouseX@{lastMouseX}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{lastMouseX}{lastMouseX}}
+{\footnotesize\ttfamily double Geometric\+Editor.\+last\+MouseX\hspace{0.3cm}{\ttfamily [private]}}
+
+Last cursor position \Hypertarget{classGeometricEditor_a685b569f912ea994d6085ee0c456717b}\label{classGeometricEditor_a685b569f912ea994d6085ee0c456717b} 
+\index{GeometricEditor@{GeometricEditor}!polygonXPoints@{polygonXPoints}}
+\index{polygonXPoints@{polygonXPoints}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{polygonXPoints}{polygonXPoints}}
+{\footnotesize\ttfamily List$<$Double$>$ Geometric\+Editor.\+polygon\+XPoints = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+X coordinates of the polygon \Hypertarget{classGeometricEditor_aee851516a5d565d96894f9fdb2b05863}\label{classGeometricEditor_aee851516a5d565d96894f9fdb2b05863} 
+\index{GeometricEditor@{GeometricEditor}!polygonYPoints@{polygonYPoints}}
+\index{polygonYPoints@{polygonYPoints}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{polygonYPoints}{polygonYPoints}}
+{\footnotesize\ttfamily List$<$Double$>$ Geometric\+Editor.\+polygon\+YPoints = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+Y coordinates of the polygon \Hypertarget{classGeometricEditor_a77a08d2499127ed882d2d03c304253d5}\label{classGeometricEditor_a77a08d2499127ed882d2d03c304253d5} 
+\index{GeometricEditor@{GeometricEditor}!selectedShape@{selectedShape}}
+\index{selectedShape@{selectedShape}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{selectedShape}{selectedShape}}
+{\footnotesize\ttfamily String Geometric\+Editor.\+selected\+Shape = "{}Circle"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+Selected shape type \Hypertarget{classGeometricEditor_ac34ca26f08d74b7f68c507f9aca58b09}\label{classGeometricEditor_ac34ca26f08d74b7f68c507f9aca58b09} 
+\index{GeometricEditor@{GeometricEditor}!selectedShapeText@{selectedShapeText}}
+\index{selectedShapeText@{selectedShapeText}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{selectedShapeText}{selectedShapeText}}
+{\footnotesize\ttfamily Text Geometric\+Editor.\+selected\+Shape\+Text\hspace{0.3cm}{\ttfamily [private]}}
+
+Text displaying the selected shape type \Hypertarget{classGeometricEditor_afd174f4f1d7132d63675d4002cf9ac0b}\label{classGeometricEditor_afd174f4f1d7132d63675d4002cf9ac0b} 
+\index{GeometricEditor@{GeometricEditor}!shapes@{shapes}}
+\index{shapes@{shapes}!GeometricEditor@{GeometricEditor}}
+\doxysubsubsection{\texorpdfstring{shapes}{shapes}}
+{\footnotesize\ttfamily List$<$\mbox{\hyperlink{classShape}{Shape}}$>$ Geometric\+Editor.\+shapes = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+List of all shapes 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/linux/laby/java/5/src/Geometric\+Editor.\+java\end{DoxyCompactItemize}

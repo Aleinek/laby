@@ -1,0 +1,455 @@
+\doxysection{Shape Class Reference}
+\hypertarget{classShape}{}\label{classShape}\index{Shape@{Shape}}
+
+
+Inheritance diagram for Shape\+:
+% FIG 0
+
+
+Collaboration diagram for Shape\+:
+% FIG 1
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classShape_a9997c5d4c2f501418a59bc71ffec0788}{Shape}} (String \mbox{\hyperlink{classShape_af77feb678237243bfd9030707e21ad3b}{type}}, double \mbox{\hyperlink{classShape_af0a8fb970bd96e4ed48966a66dff3430}{x}}, double \mbox{\hyperlink{classShape_ae7cbd9ab3b012efc71605e8049845c49}{y}}, double \mbox{\hyperlink{classShape_ac348d29a623f21eef6705fb5b506a2cd}{width}}, double \mbox{\hyperlink{classShape_afe4c86a32b9cd294593ca4ff68cca66d}{height}}, Color color)
+\item 
+\mbox{\hyperlink{classShape_ac9b6af417c60681a49febb26b39106c3}{Shape}} (String \mbox{\hyperlink{classShape_af77feb678237243bfd9030707e21ad3b}{type}}, double\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classShape_a10c92ee359b5f0a6eacd1d92347d7345}{x\+Points}}, double\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classShape_a1a6bcb4fa9639ecaeb7f61a5c94868a8}{y\+Points}}, int \mbox{\hyperlink{classShape_ae5bce69d6d900e803cbbcdca6c0a7066}{point\+Count}}, Color color)
+\item 
+String \mbox{\hyperlink{classShape_a3cf204de62412c6cb783e282b72326eb}{get\+Type}} ()
+\item 
+double \mbox{\hyperlink{classShape_abf7a201e0fdfa8b88bef4bcaf8d64b92}{getX}} ()
+\item 
+double \mbox{\hyperlink{classShape_a2030b839bab5c8a4524c81209879b747}{getY}} ()
+\item 
+double \mbox{\hyperlink{classShape_ac511671ad374e2af63d98080689f31a9}{get\+Width}} ()
+\item 
+double \mbox{\hyperlink{classShape_aea1bf70c129738e57ef1b447b7ed8449}{get\+Height}} ()
+\item 
+double\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classShape_a6acdae1698d8416d1075f71f26c5cdad}{get\+XPoints}} ()
+\item 
+double\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classShape_ac980c8355aec420899e208485b411990}{get\+YPoints}} ()
+\item 
+int \mbox{\hyperlink{classShape_a96caf8f745f5702d9ecf451a95d6a6da}{get\+Point\+Count}} ()
+\item 
+Color \mbox{\hyperlink{classShape_a4271dba03c30547a4e0c87418cc07bf8}{get\+Color}} ()
+\item 
+double \mbox{\hyperlink{classShape_a0868df374f89a5a9bd8fb9053940577b}{get\+Rotation\+Angle}} ()
+\item 
+void \mbox{\hyperlink{classShape_acfa455ffdf4b237574911aed3728535d}{set\+Rotation\+Angle}} (double angle)
+\item 
+boolean \mbox{\hyperlink{classShape_ab09a1b2d76a27f58619640d5dd1c9b7c}{contains}} (double px, double py)
+\item 
+void \mbox{\hyperlink{classShape_a623330fed5d138be30215d5f103d51d9}{move}} (double dx, double dy)
+\item 
+void \mbox{\hyperlink{classShape_a3310991ea7abcdfbe1873efeb542e9e6}{resize}} (double scale\+Factor)
+\item 
+void \mbox{\hyperlink{classShape_ab8601803653ba8cce7e129230186f4e6}{set\+Color}} (Color color)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classShape_a587d0c0089d0b49155985bdea529fd2e}{rotate\+Polygon}} ()
+\item 
+void \mbox{\hyperlink{classShape_a0e703c5c9cf8800826fca5e67b478acd}{update\+Centroid}} ()
+\item 
+String \mbox{\hyperlink{classShape_a1fc236d8ce61e33955d55ea0eeeb72c7}{color\+To\+Hex}} (Color color)
+\item 
+Color \mbox{\hyperlink{classShape_a6edd6cd450b818d6f98841bec72dc40e}{hex\+To\+Color}} (String hex)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{\hyperlink{classShape_af77feb678237243bfd9030707e21ad3b}{type}}
+\item 
+double \mbox{\hyperlink{classShape_af0a8fb970bd96e4ed48966a66dff3430}{x}}
+\item 
+double \mbox{\hyperlink{classShape_ae7cbd9ab3b012efc71605e8049845c49}{y}}
+\item 
+double \mbox{\hyperlink{classShape_ac348d29a623f21eef6705fb5b506a2cd}{width}}
+\item 
+double \mbox{\hyperlink{classShape_afe4c86a32b9cd294593ca4ff68cca66d}{height}}
+\item 
+double\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classShape_a10c92ee359b5f0a6eacd1d92347d7345}{x\+Points}}
+\item 
+double\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classShape_a1a6bcb4fa9639ecaeb7f61a5c94868a8}{y\+Points}}
+\item 
+double\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classShape_a01b1f5b21cc899d5017f759b0119fb15}{original\+XPoints}}
+\item 
+double\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classShape_a67353649b24938b01c284e6552a7fa43}{original\+YPoints}}
+\item 
+int \mbox{\hyperlink{classShape_ae5bce69d6d900e803cbbcdca6c0a7066}{point\+Count}}
+\item 
+String \mbox{\hyperlink{classShape_a4418b7ded16c784fe0b3733dceb27beb}{color\+Hex}}
+\item 
+double \mbox{\hyperlink{classShape_a64fdf78ccbf9ba8f587e39e11604538c}{rotation\+Angle}} = 0.\+0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final long \mbox{\hyperlink{classShape_aa0270c7a2f4f590af08e96b692659d37}{serial\+Version\+UID}} = 1L
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a general geometric shape (circle, rectangle, or polygon). Supports drawing, moving, scaling, and rotating the shape. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classShape_a9997c5d4c2f501418a59bc71ffec0788}\label{classShape_a9997c5d4c2f501418a59bc71ffec0788} 
+\index{Shape@{Shape}!Shape@{Shape}}
+\index{Shape@{Shape}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{Shape()}{Shape()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Shape.\+Shape (\begin{DoxyParamCaption}\item[{String}]{type,  }\item[{double}]{x,  }\item[{double}]{y,  }\item[{double}]{width,  }\item[{double}]{height,  }\item[{Color}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructs a shape of type circle or rectangle.
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of the shape (Circle or Rectangle). \\
+\hline
+{\em x} & The X-\/coordinate of the shape\textquotesingle{}s center. \\
+\hline
+{\em y} & The Y-\/coordinate of the shape\textquotesingle{}s center. \\
+\hline
+{\em width} & The width of the shape. \\
+\hline
+{\em height} & The height of the shape. \\
+\hline
+{\em color} & The color of the shape. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShape_ac9b6af417c60681a49febb26b39106c3}\label{classShape_ac9b6af417c60681a49febb26b39106c3} 
+\index{Shape@{Shape}!Shape@{Shape}}
+\index{Shape@{Shape}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{Shape()}{Shape()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Shape.\+Shape (\begin{DoxyParamCaption}\item[{String}]{type,  }\item[{double\mbox{[}$\,$\mbox{]}}]{x\+Points,  }\item[{double\mbox{[}$\,$\mbox{]}}]{y\+Points,  }\item[{int}]{point\+Count,  }\item[{Color}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructs a polygon shape.
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of the shape (Polygon). \\
+\hline
+{\em x\+Points} & Array of X-\/coordinates for the points of the polygon. \\
+\hline
+{\em y\+Points} & Array of Y-\/coordinates for the points of the polygon. \\
+\hline
+{\em point\+Count} & The number of points in the polygon. \\
+\hline
+{\em color} & The color of the polygon. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classShape_a1fc236d8ce61e33955d55ea0eeeb72c7}\label{classShape_a1fc236d8ce61e33955d55ea0eeeb72c7} 
+\index{Shape@{Shape}!colorToHex@{colorToHex}}
+\index{colorToHex@{colorToHex}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{colorToHex()}{colorToHex()}}
+{\footnotesize\ttfamily String Shape.\+color\+To\+Hex (\begin{DoxyParamCaption}\item[{Color}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Converts a color to its HEX string representation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & The color to convert. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The HEX string representation of the color. 
+\end{DoxyReturn}
+\Hypertarget{classShape_ab09a1b2d76a27f58619640d5dd1c9b7c}\label{classShape_ab09a1b2d76a27f58619640d5dd1c9b7c} 
+\index{Shape@{Shape}!contains@{contains}}
+\index{contains@{contains}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{contains()}{contains()}}
+{\footnotesize\ttfamily boolean Shape.\+contains (\begin{DoxyParamCaption}\item[{double}]{px,  }\item[{double}]{py }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Checks if a point is inside the shape.
+
+
+\begin{DoxyParams}{Parameters}
+{\em px} & The X-\/coordinate of the point. \\
+\hline
+{\em py} & The Y-\/coordinate of the point. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the point is inside the shape; false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{classShape_a4271dba03c30547a4e0c87418cc07bf8}\label{classShape_a4271dba03c30547a4e0c87418cc07bf8} 
+\index{Shape@{Shape}!getColor@{getColor}}
+\index{getColor@{getColor}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getColor()}{getColor()}}
+{\footnotesize\ttfamily Color Shape.\+get\+Color (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the color of the shape.
+
+\begin{DoxyReturn}{Returns}
+The color of the shape. 
+\end{DoxyReturn}
+\Hypertarget{classShape_aea1bf70c129738e57ef1b447b7ed8449}\label{classShape_aea1bf70c129738e57ef1b447b7ed8449} 
+\index{Shape@{Shape}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getHeight()}{getHeight()}}
+{\footnotesize\ttfamily double Shape.\+get\+Height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the height of the shape.
+
+\begin{DoxyReturn}{Returns}
+The height of the shape. 
+\end{DoxyReturn}
+\Hypertarget{classShape_a96caf8f745f5702d9ecf451a95d6a6da}\label{classShape_a96caf8f745f5702d9ecf451a95d6a6da} 
+\index{Shape@{Shape}!getPointCount@{getPointCount}}
+\index{getPointCount@{getPointCount}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getPointCount()}{getPointCount()}}
+{\footnotesize\ttfamily int Shape.\+get\+Point\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the number of points in the shape (for polygons).
+
+\begin{DoxyReturn}{Returns}
+The number of points in the shape. 
+\end{DoxyReturn}
+\Hypertarget{classShape_a0868df374f89a5a9bd8fb9053940577b}\label{classShape_a0868df374f89a5a9bd8fb9053940577b} 
+\index{Shape@{Shape}!getRotationAngle@{getRotationAngle}}
+\index{getRotationAngle@{getRotationAngle}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getRotationAngle()}{getRotationAngle()}}
+{\footnotesize\ttfamily double Shape.\+get\+Rotation\+Angle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the rotation angle of the shape.
+
+\begin{DoxyReturn}{Returns}
+The rotation angle of the shape. 
+\end{DoxyReturn}
+\Hypertarget{classShape_a3cf204de62412c6cb783e282b72326eb}\label{classShape_a3cf204de62412c6cb783e282b72326eb} 
+\index{Shape@{Shape}!getType@{getType}}
+\index{getType@{getType}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getType()}{getType()}}
+{\footnotesize\ttfamily String Shape.\+get\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the type of the shape.
+
+\begin{DoxyReturn}{Returns}
+The type of the shape. 
+\end{DoxyReturn}
+\Hypertarget{classShape_ac511671ad374e2af63d98080689f31a9}\label{classShape_ac511671ad374e2af63d98080689f31a9} 
+\index{Shape@{Shape}!getWidth@{getWidth}}
+\index{getWidth@{getWidth}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getWidth()}{getWidth()}}
+{\footnotesize\ttfamily double Shape.\+get\+Width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the width of the shape.
+
+\begin{DoxyReturn}{Returns}
+The width of the shape. 
+\end{DoxyReturn}
+\Hypertarget{classShape_abf7a201e0fdfa8b88bef4bcaf8d64b92}\label{classShape_abf7a201e0fdfa8b88bef4bcaf8d64b92} 
+\index{Shape@{Shape}!getX@{getX}}
+\index{getX@{getX}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getX()}{getX()}}
+{\footnotesize\ttfamily double Shape.\+getX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the X-\/coordinate of the shape\textquotesingle{}s center.
+
+\begin{DoxyReturn}{Returns}
+The X-\/coordinate of the shape\textquotesingle{}s center. 
+\end{DoxyReturn}
+\Hypertarget{classShape_a6acdae1698d8416d1075f71f26c5cdad}\label{classShape_a6acdae1698d8416d1075f71f26c5cdad} 
+\index{Shape@{Shape}!getXPoints@{getXPoints}}
+\index{getXPoints@{getXPoints}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getXPoints()}{getXPoints()}}
+{\footnotesize\ttfamily double\mbox{[}$\,$\mbox{]} Shape.\+get\+XPoints (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the array of X-\/coordinates for the shape\textquotesingle{}s points (for polygons).
+
+\begin{DoxyReturn}{Returns}
+Array of X-\/coordinates for the shape\textquotesingle{}s points. 
+\end{DoxyReturn}
+\Hypertarget{classShape_a2030b839bab5c8a4524c81209879b747}\label{classShape_a2030b839bab5c8a4524c81209879b747} 
+\index{Shape@{Shape}!getY@{getY}}
+\index{getY@{getY}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getY()}{getY()}}
+{\footnotesize\ttfamily double Shape.\+getY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the Y-\/coordinate of the shape\textquotesingle{}s center.
+
+\begin{DoxyReturn}{Returns}
+The Y-\/coordinate of the shape\textquotesingle{}s center. 
+\end{DoxyReturn}
+\Hypertarget{classShape_ac980c8355aec420899e208485b411990}\label{classShape_ac980c8355aec420899e208485b411990} 
+\index{Shape@{Shape}!getYPoints@{getYPoints}}
+\index{getYPoints@{getYPoints}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{getYPoints()}{getYPoints()}}
+{\footnotesize\ttfamily double\mbox{[}$\,$\mbox{]} Shape.\+get\+YPoints (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the array of Y-\/coordinates for the shape\textquotesingle{}s points (for polygons).
+
+\begin{DoxyReturn}{Returns}
+Array of Y-\/coordinates for the shape\textquotesingle{}s points. 
+\end{DoxyReturn}
+\Hypertarget{classShape_a6edd6cd450b818d6f98841bec72dc40e}\label{classShape_a6edd6cd450b818d6f98841bec72dc40e} 
+\index{Shape@{Shape}!hexToColor@{hexToColor}}
+\index{hexToColor@{hexToColor}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{hexToColor()}{hexToColor()}}
+{\footnotesize\ttfamily Color Shape.\+hex\+To\+Color (\begin{DoxyParamCaption}\item[{String}]{hex }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Converts a HEX string representation of a color to a Color object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hex} & The HEX string representation of the color. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The Color object. 
+\end{DoxyReturn}
+\Hypertarget{classShape_a623330fed5d138be30215d5f103d51d9}\label{classShape_a623330fed5d138be30215d5f103d51d9} 
+\index{Shape@{Shape}!move@{move}}
+\index{move@{move}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{move()}{move()}}
+{\footnotesize\ttfamily void Shape.\+move (\begin{DoxyParamCaption}\item[{double}]{dx,  }\item[{double}]{dy }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Moves the shape by a specified offset in the X and Y directions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dx} & The offset in the X direction. \\
+\hline
+{\em dy} & The offset in the Y direction. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShape_a3310991ea7abcdfbe1873efeb542e9e6}\label{classShape_a3310991ea7abcdfbe1873efeb542e9e6} 
+\index{Shape@{Shape}!resize@{resize}}
+\index{resize@{resize}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{resize()}{resize()}}
+{\footnotesize\ttfamily void Shape.\+resize (\begin{DoxyParamCaption}\item[{double}]{scale\+Factor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Scales the shape by a specified factor. Ensures the width and height remain above a minimum size.
+
+
+\begin{DoxyParams}{Parameters}
+{\em scale\+Factor} & The scaling factor. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShape_a587d0c0089d0b49155985bdea529fd2e}\label{classShape_a587d0c0089d0b49155985bdea529fd2e} 
+\index{Shape@{Shape}!rotatePolygon@{rotatePolygon}}
+\index{rotatePolygon@{rotatePolygon}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{rotatePolygon()}{rotatePolygon()}}
+{\footnotesize\ttfamily void Shape.\+rotate\+Polygon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Rotates the polygon based on the current rotation angle. \Hypertarget{classShape_ab8601803653ba8cce7e129230186f4e6}\label{classShape_ab8601803653ba8cce7e129230186f4e6} 
+\index{Shape@{Shape}!setColor@{setColor}}
+\index{setColor@{setColor}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{setColor()}{setColor()}}
+{\footnotesize\ttfamily void Shape.\+set\+Color (\begin{DoxyParamCaption}\item[{Color}]{color }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Updates the color of the shape.
+
+
+\begin{DoxyParams}{Parameters}
+{\em color} & The new color of the shape. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShape_acfa455ffdf4b237574911aed3728535d}\label{classShape_acfa455ffdf4b237574911aed3728535d} 
+\index{Shape@{Shape}!setRotationAngle@{setRotationAngle}}
+\index{setRotationAngle@{setRotationAngle}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{setRotationAngle()}{setRotationAngle()}}
+{\footnotesize\ttfamily void Shape.\+set\+Rotation\+Angle (\begin{DoxyParamCaption}\item[{double}]{angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the rotation angle of the shape. If the shape is a polygon, updates the rotation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em angle} & The new rotation angle in degrees. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classShape_a0e703c5c9cf8800826fca5e67b478acd}\label{classShape_a0e703c5c9cf8800826fca5e67b478acd} 
+\index{Shape@{Shape}!updateCentroid@{updateCentroid}}
+\index{updateCentroid@{updateCentroid}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{updateCentroid()}{updateCentroid()}}
+{\footnotesize\ttfamily void Shape.\+update\+Centroid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Updates the centroid of the polygon based on its points. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classShape_a4418b7ded16c784fe0b3733dceb27beb}\label{classShape_a4418b7ded16c784fe0b3733dceb27beb} 
+\index{Shape@{Shape}!colorHex@{colorHex}}
+\index{colorHex@{colorHex}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{colorHex}{colorHex}}
+{\footnotesize\ttfamily String Shape.\+color\+Hex\hspace{0.3cm}{\ttfamily [private]}}
+
+The color of the shape in HEX format. \Hypertarget{classShape_afe4c86a32b9cd294593ca4ff68cca66d}\label{classShape_afe4c86a32b9cd294593ca4ff68cca66d} 
+\index{Shape@{Shape}!height@{height}}
+\index{height@{height}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{height}{height}}
+{\footnotesize\ttfamily double Shape.\+height\hspace{0.3cm}{\ttfamily [private]}}
+
+The height of the shape. \Hypertarget{classShape_a01b1f5b21cc899d5017f759b0119fb15}\label{classShape_a01b1f5b21cc899d5017f759b0119fb15} 
+\index{Shape@{Shape}!originalXPoints@{originalXPoints}}
+\index{originalXPoints@{originalXPoints}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{originalXPoints}{originalXPoints}}
+{\footnotesize\ttfamily double \mbox{[}$\,$\mbox{]} Shape.\+original\+XPoints\hspace{0.3cm}{\ttfamily [private]}}
+
+Original X-\/coordinates of the polygon\textquotesingle{}s points. \Hypertarget{classShape_a67353649b24938b01c284e6552a7fa43}\label{classShape_a67353649b24938b01c284e6552a7fa43} 
+\index{Shape@{Shape}!originalYPoints@{originalYPoints}}
+\index{originalYPoints@{originalYPoints}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{originalYPoints}{originalYPoints}}
+{\footnotesize\ttfamily double \mbox{[}$\,$\mbox{]} Shape.\+original\+YPoints\hspace{0.3cm}{\ttfamily [private]}}
+
+Original Y-\/coordinates of the polygon\textquotesingle{}s points. \Hypertarget{classShape_ae5bce69d6d900e803cbbcdca6c0a7066}\label{classShape_ae5bce69d6d900e803cbbcdca6c0a7066} 
+\index{Shape@{Shape}!pointCount@{pointCount}}
+\index{pointCount@{pointCount}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{pointCount}{pointCount}}
+{\footnotesize\ttfamily int Shape.\+point\+Count\hspace{0.3cm}{\ttfamily [private]}}
+
+Number of points in the shape (for polygons). \Hypertarget{classShape_a64fdf78ccbf9ba8f587e39e11604538c}\label{classShape_a64fdf78ccbf9ba8f587e39e11604538c} 
+\index{Shape@{Shape}!rotationAngle@{rotationAngle}}
+\index{rotationAngle@{rotationAngle}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{rotationAngle}{rotationAngle}}
+{\footnotesize\ttfamily double Shape.\+rotation\+Angle = 0.\+0\hspace{0.3cm}{\ttfamily [private]}}
+
+The rotation angle of the shape, in degrees. \Hypertarget{classShape_aa0270c7a2f4f590af08e96b692659d37}\label{classShape_aa0270c7a2f4f590af08e96b692659d37} 
+\index{Shape@{Shape}!serialVersionUID@{serialVersionUID}}
+\index{serialVersionUID@{serialVersionUID}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{serialVersionUID}{serialVersionUID}}
+{\footnotesize\ttfamily final long Shape.\+serial\+Version\+UID = 1L\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Serial version UID for ensuring compatibility during deserialization. \Hypertarget{classShape_af77feb678237243bfd9030707e21ad3b}\label{classShape_af77feb678237243bfd9030707e21ad3b} 
+\index{Shape@{Shape}!type@{type}}
+\index{type@{type}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily String Shape.\+type\hspace{0.3cm}{\ttfamily [private]}}
+
+The type of the shape (Circle, Rectangle, Polygon). \Hypertarget{classShape_ac348d29a623f21eef6705fb5b506a2cd}\label{classShape_ac348d29a623f21eef6705fb5b506a2cd} 
+\index{Shape@{Shape}!width@{width}}
+\index{width@{width}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{width}{width}}
+{\footnotesize\ttfamily double Shape.\+width\hspace{0.3cm}{\ttfamily [private]}}
+
+The width of the shape. \Hypertarget{classShape_af0a8fb970bd96e4ed48966a66dff3430}\label{classShape_af0a8fb970bd96e4ed48966a66dff3430} 
+\index{Shape@{Shape}!x@{x}}
+\index{x@{x}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily double Shape.\+x\hspace{0.3cm}{\ttfamily [private]}}
+
+The X-\/coordinate of the shape\textquotesingle{}s center. \Hypertarget{classShape_a10c92ee359b5f0a6eacd1d92347d7345}\label{classShape_a10c92ee359b5f0a6eacd1d92347d7345} 
+\index{Shape@{Shape}!xPoints@{xPoints}}
+\index{xPoints@{xPoints}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{xPoints}{xPoints}}
+{\footnotesize\ttfamily double \mbox{[}$\,$\mbox{]} Shape.\+x\+Points\hspace{0.3cm}{\ttfamily [private]}}
+
+Array of X-\/coordinates for the shape\textquotesingle{}s points (for polygons). \Hypertarget{classShape_ae7cbd9ab3b012efc71605e8049845c49}\label{classShape_ae7cbd9ab3b012efc71605e8049845c49} 
+\index{Shape@{Shape}!y@{y}}
+\index{y@{y}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily double Shape.\+y\hspace{0.3cm}{\ttfamily [private]}}
+
+The Y-\/coordinate of the shape\textquotesingle{}s center. \Hypertarget{classShape_a1a6bcb4fa9639ecaeb7f61a5c94868a8}\label{classShape_a1a6bcb4fa9639ecaeb7f61a5c94868a8} 
+\index{Shape@{Shape}!yPoints@{yPoints}}
+\index{yPoints@{yPoints}!Shape@{Shape}}
+\doxysubsubsection{\texorpdfstring{yPoints}{yPoints}}
+{\footnotesize\ttfamily double \mbox{[}$\,$\mbox{]} Shape.\+y\+Points\hspace{0.3cm}{\ttfamily [private]}}
+
+Array of Y-\/coordinates for the shape\textquotesingle{}s points (for polygons). 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/linux/laby/java/5/src/Shape.\+java\end{DoxyCompactItemize}
