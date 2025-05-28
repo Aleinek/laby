@@ -4,6 +4,7 @@ public class Board {
     private final Cell[][] cells;
     private final int width, height;
     private final List<Hare> hares = Collections.synchronizedList(new ArrayList<>());
+    private Wolf wolf;
 
     public Board(int width, int height) {
         this.width = width;
@@ -48,5 +49,13 @@ public class Board {
 
     public Cell getCell(int x, int y) {
         return cells[x][y];
+    }
+
+    public synchronized Wolf getWolf() {
+        return wolf;
+    }
+
+    public synchronized void setWolf(Wolf wolf) {
+        this.wolf = wolf;
     }
 }

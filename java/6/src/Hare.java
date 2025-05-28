@@ -12,10 +12,8 @@ public class Hare extends Animal {
     }
 
     private void move() {
-        Hare me = this;
-        Wolf wolf = (Wolf) board.getCell(getX(), getY()).getOccupant();
-        Hare nearest = board.getClosestHare(x, y);
-        if (nearest == null) return;
+        Wolf wolf = board.getWolf();
+        if (wolf == null) return;
 
         int bestDx = 0, bestDy = 0, maxDist = -1;
         for (int dx = -1; dx <= 1; dx++) {

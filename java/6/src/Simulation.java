@@ -5,6 +5,7 @@ public class Simulation {
             hare.start();
         }
         Wolf wolf = new Wolf(board, delayK);
+        board.setWolf(wolf);
         wolf.start();
     }
 }
