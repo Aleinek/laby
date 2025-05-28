@@ -11,8 +11,13 @@ public class Shape implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    /** The type of the shape (Circle, Rectangle, Polygon). */
-    private String type;
+    /** Enum for shape types */
+    public enum ShapeType {
+        CIRCLE, RECTANGLE, POLYGON
+    }
+
+    /** The type of the shape (CIRCLE, RECTANGLE, POLYGON). */
+    private ShapeType type;
 
     /** The X-coordinate of the shape's center. */
     private double x;
@@ -50,14 +55,14 @@ public class Shape implements Serializable {
     /**
      * Constructs a shape of type circle or rectangle.
      *
-     * @param type The type of the shape (Circle or Rectangle).
+     * @param type The type of the shape (CIRCLE or RECTANGLE).
      * @param x The X-coordinate of the shape's center.
      * @param y The Y-coordinate of the shape's center.
      * @param width The width of the shape.
      * @param height The height of the shape.
      * @param color The color of the shape.
      */
-    public Shape(String type, double x, double y, double width, double height, Color color) {
+    public Shape(ShapeType type, double x, double y, double width, double height, Color color) {
         this.type = type;
         this.x = x;
         this.y = y;
@@ -69,13 +74,13 @@ public class Shape implements Serializable {
     /**
      * Constructs a polygon shape.
      *
-     * @param type The type of the shape (Polygon).
+     * @param type The type of the shape (POLYGON).
      * @param xPoints Array of X-coordinates for the points of the polygon.
      * @param yPoints Array of Y-coordinates for the points of the polygon.
      * @param pointCount The number of points in the polygon.
      * @param color The color of the polygon.
      */
-    public Shape(String type, double[] xPoints, double[] yPoints, int pointCount, Color color) {
+    public Shape(ShapeType type, double[] xPoints, double[] yPoints, int pointCount, Color color) {
         this.type = type;
         this.xPoints = xPoints.clone();
         this.yPoints = yPoints.clone();
@@ -93,7 +98,7 @@ public class Shape implements Serializable {
      *
      * @return The type of the shape.
      */
-    public String getType() {
+    public ShapeType getType() {
         return type;
     }
 
@@ -186,7 +191,7 @@ public class Shape implements Serializable {
      */
     public void setRotationAngle(double angle) {
         this.rotationAngle = angle % 360;
-        if ("Polygon".equals(type)) {
+        if (type == ShapeType.POLYGON) {
             rotatePolygon();
         }
     }
@@ -200,10 +205,10 @@ public class Shape implements Serializable {
      */
     public boolean contains(double px, double py) {
         switch (type) {
-            case "Circle":
+            case CIRCLE:
                 double radius = width / 2.0;
                 return Math.pow(px - x, 2) + Math.pow(py - y, 2) <= Math.pow(radius, 2);
-            case "Rectangle":
+            case RECTANGLE:
                 double halfWidth = width / 2.0;
                 double halfHeight = height / 2.0;
                 double cosTheta = Math.cos(Math.toRadians(rotationAngle));
@@ -211,7 +216,7 @@ public class Shape implements Serializable {
                 double localX = cosTheta * (px - x) + sinTheta * (py - y);
                 double localY = -sinTheta * (px - x) + cosTheta * (py - y);
                 return localX >= -halfWidth && localX <= halfWidth && localY >= -halfHeight && localY <= halfHeight;
-            case "Polygon":
+            case POLYGON:
                 boolean inside = false;
                 for (int i = 0, j = pointCount - 1; i < pointCount; j = i++) {
                     if ((yPoints[i] > py) != (yPoints[j] > py) &&
@@ -233,12 +238,12 @@ public class Shape implements Serializable {
      */
     public void move(double dx, double dy) {
         switch (type) {
-            case "Circle":
-            case "Rectangle":
+            case CIRCLE:
+            case RECTANGLE:
                 x += dx;
                 y += dy;
                 break;
-            case "Polygon":
+            case POLYGON:
                 for (int i = 0; i < pointCount; i++) {
                     xPoints[i] += dx;
                     yPoints[i] += dy;
@@ -259,14 +264,14 @@ public class Shape implements Serializable {
      */
     public void resize(double scaleFactor) {
         switch (type) {
-            case "Circle":
-            case "Rectangle":
+            case CIRCLE:
+            case RECTANGLE:
                 if (width * scaleFactor > 5 && height * scaleFactor > 5) {
                     width *= scaleFactor;
                     height *= scaleFactor;
                 }
                 break;
-            case "Polygon":
+            case POLYGON:
                 for (int i = 0; i < pointCount; i++) {
                     double dx = originalXPoints[i] - x;
                     double dy = originalYPoints[i] - y;

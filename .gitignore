@@ -1,5 +1,5 @@
 .vscode
 *.class
 main
-java/5/lib
+java/*/lib
 *.shapes

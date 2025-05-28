@@ -30,6 +30,11 @@ import java.util.List;
  */
 public class GeometricEditor extends Application {
 
+    /** Enum for shape types */
+    private enum ShapeType {
+        CIRCLE, RECTANGLE, POLYGON
+    }
+
     /** Canvas for drawing */
     private Canvas canvas;
 
@@ -40,7 +45,7 @@ public class GeometricEditor extends Application {
     private ColorPicker colorPicker;
 
     /** Selected shape type */
-    private String selectedShape = "Circle";
+    private ShapeType selectedShape = ShapeType.CIRCLE;
 
     /** Text displaying the selected shape type */
     private Text selectedShapeText;
@@ -65,6 +70,12 @@ public class GeometricEditor extends Application {
 
     /** Button for finishing polygon drawing */
     private Button finishPolygonButton;
+
+    /** Indicates if a rectangle is being drawn */
+    private boolean isDrawingRectangle = false;
+
+    /** Temporary rectangle being drawn */
+    private Shape tempRectangle = null;
 
     /**
      * Default constructor for the GeometricEditor class.
@@ -102,6 +113,7 @@ public class GeometricEditor extends Application {
 
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, this::onMousePressed);
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::onMouseDragged);
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, this::onMouseReleased);
         canvas.addEventHandler(ScrollEvent.SCROLL, this::onScroll);
 
         root.setTop(menuBar);
@@ -137,17 +149,17 @@ public class GeometricEditor extends Application {
         MenuItem polygonItem = new MenuItem("Polygon");
 
         circleItem.setOnAction(e -> {
-            selectedShape = "Circle";
+            selectedShape = ShapeType.CIRCLE;
             updateSelectedShapeText();
             resetPolygonDrawing();
         });
         rectangleItem.setOnAction(e -> {
-            selectedShape = "Rectangle";
+            selectedShape = ShapeType.RECTANGLE;
             updateSelectedShapeText();
             resetPolygonDrawing();
         });
         polygonItem.setOnAction(e -> {
-            selectedShape = "Polygon";
+            selectedShape = ShapeType.POLYGON;
             isDrawingPolygon = true;
             polygonXPoints.clear();
             polygonYPoints.clear();
@@ -194,7 +206,7 @@ public class GeometricEditor extends Application {
      * @param event The key press event
      */
     private void onKeyPressed(KeyEvent event) {
-        if (activeShape != null && ("Rectangle".equals(activeShape.getType()) || "Polygon".equals(activeShape.getType()))) {
+        if (activeShape != null) {
             switch (event.getCode()) {
                 case LEFT:
                     activeShape.setRotationAngle(activeShape.getRotationAngle() - 5);
@@ -249,7 +261,7 @@ public class GeometricEditor extends Application {
      * @param e The mouse press event
      */
     private void onMousePressed(MouseEvent e) {
-        if (isDrawingPolygon && "Polygon".equals(selectedShape)) {
+        if (isDrawingPolygon && selectedShape == ShapeType.POLYGON) {
             polygonXPoints.add(e.getX());
             polygonYPoints.add(e.getY());
             activeShape = null;
@@ -272,21 +284,25 @@ public class GeometricEditor extends Application {
                 Shape shape = null;
 
                 switch (selectedShape) {
-                    case "Circle":
-                        shape = new Shape("Circle", lastMouseX, lastMouseY, 50, 50, colorPicker.getValue());
+                    case CIRCLE:
+                        shape = new Shape(Shape.ShapeType.CIRCLE, lastMouseX, lastMouseY, 50, 50, colorPicker.getValue());
+                        shapes.add(shape);
+                        activeShape = shape;
+                        redrawShapes();
                         break;
-                    case "Rectangle":
-                        shape = new Shape("Rectangle", lastMouseX, lastMouseY, 80, 40, colorPicker.getValue());
+                    case RECTANGLE:
+                        // Start drawing rectangle
+                        isDrawingRectangle = true;
+                        tempRectangle = new Shape(Shape.ShapeType.RECTANGLE, lastMouseX, lastMouseY, 1, 1, colorPicker.getValue());
+                        activeShape = tempRectangle;
+                        redrawShapes();
+                        break;
+                    default:
                         break;
                 }
-
-                if (shape != null) {
-                    shapes.add(shape);
-                    activeShape = shape;
-                }
+            } else {
+                redrawShapes();
             }
-
-            redrawShapes();
         }
     }
 
@@ -296,7 +312,30 @@ public class GeometricEditor extends Application {
      * @param e The mouse drag event
      */
     private void onMouseDragged(MouseEvent e) {
-        if (activeShape != null) {
+        if (isDrawingRectangle && tempRectangle != null) {
+            double startX = lastMouseX;
+            double startY = lastMouseY;
+            double currX = e.getX();
+            double currY = e.getY();
+            double centerX = (startX + currX) / 2.0;
+            double centerY = (startY + currY) / 2.0;
+            double width = Math.abs(currX - startX);
+            double height = Math.abs(currY - startY);
+
+            tempRectangle.move(centerX - tempRectangle.getX(), centerY - tempRectangle.getY());
+            // Set width and height directly (not via resize)
+            try {
+                java.lang.reflect.Field widthField = Shape.class.getDeclaredField("width");
+                java.lang.reflect.Field heightField = Shape.class.getDeclaredField("height");
+                widthField.setAccessible(true);
+                heightField.setAccessible(true);
+                widthField.set(tempRectangle, width);
+                heightField.set(tempRectangle, height);
+            } catch (Exception ex) {
+                // Should not happen
+            }
+            redrawShapes();
+        } else if (activeShape != null) {
             double dx = e.getX() - lastMouseX;
             double dy = e.getY() - lastMouseY;
             activeShape.move(dx, dy);
@@ -307,14 +346,19 @@ public class GeometricEditor extends Application {
     }
 
     /**
-     * Handles scroll events for resizing shapes.
+     * Handles mouse release events for finishing rectangle drawing.
      *
-     * @param e The scroll event
+     * @param e The mouse release event
      */
-    private void onScroll(ScrollEvent e) {
-        if (activeShape != null) {
-            double scaleFactor = e.getDeltaY() < 0 ? 0.9 : 1.1;
-            activeShape.resize(scaleFactor);
+    private void onMouseReleased(MouseEvent e) {
+        if (isDrawingRectangle && tempRectangle != null) {
+            // Only add if width and height are reasonable
+            if (tempRectangle.getWidth() > 5 && tempRectangle.getHeight() > 5) {
+                shapes.add(tempRectangle);
+            }
+            activeShape = tempRectangle;
+            isDrawingRectangle = false;
+            tempRectangle = null;
             redrawShapes();
         }
     }
@@ -326,10 +370,10 @@ public class GeometricEditor extends Application {
         if (polygonXPoints.size() >= 3) {
             double[] xPoints = polygonXPoints.stream().mapToDouble(Double::doubleValue).toArray();
             double[] yPoints = polygonYPoints.stream().mapToDouble(Double::doubleValue).toArray();
-            Shape polygon = new Shape("Polygon", xPoints, yPoints, xPoints.length, colorPicker.getValue());
+            Shape polygon = new Shape(Shape.ShapeType.POLYGON, xPoints, yPoints, xPoints.length, colorPicker.getValue());
             shapes.add(polygon);
         }
-        selectedShape = "Circle";
+        selectedShape = ShapeType.CIRCLE;
         updateSelectedShapeText();
 
         resetPolygonDrawing();
@@ -356,17 +400,17 @@ public class GeometricEditor extends Application {
         for (Shape shape : shapes) {
             gc.setFill(shape.getColor());
             switch (shape.getType()) {
-                case "Circle":
+                case Shape.ShapeType.CIRCLE:
                     gc.fillOval(shape.getX() - shape.getWidth() / 2.0, shape.getY() - shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
                     break;
-                case "Rectangle":
+                case Shape.ShapeType.RECTANGLE:
                     gc.save();
                     gc.translate(shape.getX(), shape.getY());
                     gc.rotate(shape.getRotationAngle());
                     gc.fillRect(-shape.getWidth() / 2.0, -shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
                     gc.restore();
                     break;
-                case "Polygon":
+                case Shape.ShapeType.POLYGON:
                     gc.fillPolygon(shape.getXPoints(), shape.getYPoints(), shape.getPointCount());
                     break;
             }
@@ -375,21 +419,33 @@ public class GeometricEditor extends Application {
                 gc.setStroke(Color.RED);
                 gc.setLineWidth(2);
                 switch (shape.getType()) {
-                    case "Circle":
+                    case Shape.ShapeType.CIRCLE:
                         gc.strokeOval(shape.getX() - shape.getWidth() / 2.0, shape.getY() - shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
                         break;
-                    case "Rectangle":
+                    case Shape.ShapeType.RECTANGLE:
                         gc.save();
                         gc.translate(shape.getX(), shape.getY());
                         gc.rotate(shape.getRotationAngle());
                         gc.strokeRect(-shape.getWidth() / 2.0, -shape.getHeight() / 2.0, shape.getWidth(), shape.getHeight());
                         gc.restore();
                         break;
-                    case "Polygon":
+                    case Shape.ShapeType.POLYGON:
                         gc.strokePolygon(shape.getXPoints(), shape.getYPoints(), shape.getPointCount());
                         break;
                 }
             }
+        }
+
+        // Draw the temp rectangle if drawing
+        if (isDrawingRectangle && tempRectangle != null) {
+            gc.setStroke(Color.GRAY);
+            gc.setLineWidth(1);
+            gc.strokeRect(
+                tempRectangle.getX() - tempRectangle.getWidth() / 2.0,
+                tempRectangle.getY() - tempRectangle.getHeight() / 2.0,
+                tempRectangle.getWidth(),
+                tempRectangle.getHeight()
+            );
         }
 
         if (isDrawingPolygon) {
@@ -405,7 +461,7 @@ public class GeometricEditor extends Application {
      * Updates the text showing the selected shape type.
      */
     private void updateSelectedShapeText() {
-        selectedShapeText.setText("Selected Shape: " + selectedShape);
+        selectedShapeText.setText("Selected Shape: " + selectedShape.name().charAt(0) + selectedShape.name().substring(1).toLowerCase());
     }
 
     /**
@@ -441,6 +497,26 @@ public class GeometricEditor extends Application {
                 "   - The canvas supports freeform drawing and modification, but ensure polygons have at least three points before finishing.\n"
             );
         alert.showAndWait();
+    }
+
+    /**
+     * Handles scroll events for resizing shapes.
+     *
+     * @param event The scroll event
+     */
+    private void onScroll(ScrollEvent event) {
+        if (activeShape != null) {
+            double delta = event.getDeltaY();
+            // Scale width and height by 10% per scroll step
+            double scale = 1;
+            if (delta > 0) {
+                scale = 1.1;
+            } else if (delta < 0) {
+                scale = 0.9;
+            }
+            activeShape.resize(scale);
+            redrawShapes();
+        }
     }
 
     /**
