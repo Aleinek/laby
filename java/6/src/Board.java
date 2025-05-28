@@ -5,6 +5,7 @@ public class Board {
     private final int width, height;
     private final List<Hare> hares = Collections.synchronizedList(new ArrayList<>());
     private Wolf wolf;
+    private volatile boolean paused = false;
 
     public Board(int width, int height) {
         this.width = width;
@@ -61,5 +62,18 @@ public class Board {
         int x = wolf.getX();
         int y = wolf.getY();
         cells[x][y].setOccupant(wolf);
+    }
+
+    public synchronized void pauseSimulation() {
+        paused = true;
+    }
+
+    public synchronized void resumeSimulation() {
+        paused = false;
+        notifyAll();
+    }
+
+    public synchronized boolean isPaused() {
+        return paused;
     }
 }

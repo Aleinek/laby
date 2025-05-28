@@ -26,6 +26,11 @@ public abstract class Animal extends Thread {
 
     protected void delay() {
         try {
+            synchronized (board) {
+                while (board.isPaused()) {
+                    board.wait();
+                }
+            }
             int ms = delayK / 2 + Utils.random.nextInt(delayK);
             Thread.sleep(ms);
         } catch (InterruptedException ignored) { }
