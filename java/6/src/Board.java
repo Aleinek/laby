@@ -31,6 +31,7 @@ public class Board {
     }
 
     public synchronized void removeHare(Hare h) {
+        h.alive = false;
         hares.remove(h);
         cells[h.getX()][h.getY()].clear();
     }
@@ -57,5 +58,8 @@ public class Board {
 
     public synchronized void setWolf(Wolf wolf) {
         this.wolf = wolf;
+        int x = wolf.getX();
+        int y = wolf.getY();
+        cells[x][y].setOccupant(wolf);
     }
 }

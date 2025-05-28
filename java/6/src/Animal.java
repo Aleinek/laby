@@ -2,7 +2,7 @@ public abstract class Animal extends Thread {
     protected final Board board;
     protected int x, y;
     protected final int delayK;
-    protected boolean alive = true;
+    protected volatile boolean alive = true;
 
     public Animal(Board board, int delayK) {
         this.board = board;

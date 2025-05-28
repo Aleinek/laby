@@ -41,4 +41,8 @@ public class GUI extends Application {
     public static void stopSimulation() {
         Platform.exit();
     }
+
+    public static Board getBoard() {
+        return board;
+    }
 }
