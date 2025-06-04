@@ -72,6 +72,12 @@ public class GUI extends Application {
                 hareCount = Integer.parseInt(hareCountField.getText());
                 delayK = Integer.parseInt(delayField.getText());
 
+                if (width > 50 || height > 50) {
+                    throw new IllegalArgumentException("Width and height must be at most 50.");
+                }
+                if (width < 1 || height < 1) {
+                    throw new IllegalArgumentException("Width and height must be at least 1.");
+                }
                 if (hareCount > width * height - 1) {
                     throw new IllegalArgumentException("Hare count cannot exceed width * height - 1.");
                 }

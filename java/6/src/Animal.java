@@ -31,9 +31,16 @@ public abstract class Animal extends Thread {
      */
     protected void placeRandomly() {
         int x, y;
+        int attempts = 0;
+        int maxAttempts = 1000;
         do {
             x = Utils.random.nextInt(GUI.width);
             y = Utils.random.nextInt(GUI.height);
+            attempts++;
+            if (attempts > maxAttempts) {
+                System.err.println("[WARN] Nie udało się znaleźć wolnego miejsca dla zwierzęcia po " + maxAttempts + " próbach.");
+                return;
+            }
         } while (board.getCell(x, y).getOccupant() != null);
         board.addAnimal(this, x, y);
     }
