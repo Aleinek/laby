@@ -3,6 +3,7 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,12 +22,55 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        String[] args = getParameters().getRaw().toArray(new String[0]);
-        width = Integer.parseInt(args[0]);
-        height = Integer.parseInt(args[1]);
-        hareCount = Integer.parseInt(args[2]);
-        delayK = Integer.parseInt(args[3]);
+        showStartWindow(primaryStage);
+    }
 
+    private void showStartWindow(Stage primaryStage) {
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+
+        TextField widthField = new TextField();
+        widthField.setPromptText("Enter width");
+
+        TextField heightField = new TextField();
+        heightField.setPromptText("Enter height");
+
+        TextField hareCountField = new TextField();
+        hareCountField.setPromptText("Enter hare count");
+
+        TextField delayField = new TextField();
+        delayField.setPromptText("Enter delay");
+
+        Button startButton = new Button("Start Simulation");
+        startButton.setOnAction(e -> {
+            try {
+                width = Integer.parseInt(widthField.getText());
+                height = Integer.parseInt(heightField.getText());
+                hareCount = Integer.parseInt(hareCountField.getText());
+                delayK = Integer.parseInt(delayField.getText());
+
+                if (hareCount > width * height - 1) {
+                    throw new IllegalArgumentException("Hare count cannot exceed width * height - 1.");
+                }
+
+                // Proceed to simulation
+                showSimulationWindow(primaryStage);
+            } catch (NumberFormatException ex) {
+                logger.warning("Invalid input: " + ex.getMessage());
+            } catch (IllegalArgumentException ex) {
+                logger.warning("Invalid input: " + ex.getMessage());
+            }
+        });
+
+        layout.getChildren().addAll(widthField, heightField, hareCountField, delayField, startButton);
+
+        Scene scene = new Scene(layout, 300, 200);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Simulation Setup");
+        primaryStage.show();
+    }
+
+    private void showSimulationWindow(Stage primaryStage) {
         board = new Board(width, height);
         Simulation.init(board, hareCount, delayK);
 
@@ -84,7 +128,6 @@ public class GUI extends Application {
             Scene exitScene = new Scene(exitScreen, 400, 200);
             primaryStage.setScene(exitScene);
 
-            e.consume(); // Prevent immediate exit
         });
 
         primaryStage.show();
@@ -111,11 +154,8 @@ public class GUI extends Application {
         Button restartButton = new Button("Restart");
         restartButton.setOnAction(e -> {
             Platform.runLater(() -> {
-                board = new Board(width, height); // Reinitialize the board
-                Simulation.init(board, hareCount, delayK); // Restart the simulation with original parameters
-
-                Stage stage = (Stage) exitScreen.getScene().getWindow();
-                stage.setScene(new Scene(createSimulationLayout())); // Reset the scene to the simulation layout
+                GUI guiInstance = new GUI();
+                guiInstance.showStartWindow((Stage) exitScreen.getScene().getWindow()); // Navigate to the start screen
             });
         });
 
@@ -130,37 +170,6 @@ public class GUI extends Application {
                 System.exit(0);
             });
         });
-    }
-
-    private static VBox createSimulationLayout() {
-        GridPane grid = new GridPane();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Rectangle rect = board.getCell(x, y).getView();
-                int finalX = x, finalY = y;
-                rect.setOnMouseClicked(e -> board.getCell(finalX, finalY).togglePause());
-                grid.add(rect, x, y);
-            }
-        }
-
-        VBox layout = new VBox();
-        layout.setAlignment(Pos.CENTER);
-        layout.getChildren().add(grid);
-
-        HBox buttonBox = new HBox();
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(10);
-
-        Button pauseButton = new Button("Pause");
-        pauseButton.setOnAction(e -> board.pauseSimulation());
-
-        Button resumeButton = new Button("Resume");
-        resumeButton.setOnAction(e -> board.resumeSimulation());
-
-        buttonBox.getChildren().addAll(pauseButton, resumeButton);
-        layout.getChildren().add(buttonBox);
-
-        return layout;
     }
 
     public static Board getBoard() {

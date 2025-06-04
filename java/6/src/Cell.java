@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -17,8 +19,15 @@ public class Cell {
 
     public synchronized void setOccupant(Animal a) {
         this.occupant = a;
-        if (a instanceof Hare) view.setFill(Color.GREEN);
-        else if (a instanceof Wolf) view.setFill(Color.RED);
+        if (a instanceof Hare) {
+            Image hareImage = new Image("resources/Hare.png");
+            view.setFill(new ImagePattern(hareImage));
+            //view.setFill(Color.LIGHTGREEN);
+        } else if (a instanceof Wolf) {
+            Image wolfImage = new Image("resources/Wolf.png");
+            view.setFill(new ImagePattern(wolfImage));  
+            //view.setFill(Color.DARKRED); 
+        }
     }
 
     public synchronized void clear() {

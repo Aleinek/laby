@@ -6,7 +6,12 @@ public class Hare extends Animal {
     @Override
     public void run() {
         while (alive) {
-            if (!isPaused()) move();
+            if (!isPaused()) {
+                synchronized (this) {
+                    if (!alive) break;
+                }
+                move();
+            }
             delay();
         }
     }
