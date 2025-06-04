@@ -1,6 +1,18 @@
+/**
+ * Główna klasa zarządzająca symulacją.
+ * Inicjalizuje planszę, zwierzęta i zapisuje czas rozpoczęcia.
+ */
 public class Simulation {
+    /** Czas rozpoczęcia symulacji. */
     public static long startTime;
 
+    /**
+     * Inicjalizuje symulację.
+     * 
+     * @param board      plansza symulacji
+     * @param hareCount  liczba zajęcy
+     * @param delayK     parametr opóźnienia ruchów
+     */
     public static void init(Board board, int hareCount, int delayK) {
         startTime = System.currentTimeMillis(); // Record the start time
         board.pauseSimulation(); // Start simulation in paused state

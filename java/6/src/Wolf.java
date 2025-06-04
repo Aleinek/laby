@@ -1,10 +1,25 @@
+/**
+ * Klasa reprezentująca wilka w symulacji.
+ * Implementuje logikę polowania na zające.
+ */
 public class Wolf extends Animal {
+    /** Liczba cykli odpoczynku po zjedzeniu zająca. */
     private int restCycles = 0;
 
+    /**
+     * Tworzy nowego wilka.
+     * 
+     * @param board  plansza symulacji
+     * @param delayK parametr opóźnienia
+     */
     public Wolf(Board board, int delayK) {
         super(board, delayK);
     }
 
+    /**
+     * Główna pętla wątku wilka.
+     * Wykonuje ruchy, sprawdza warunki zakończenia symulacji.
+     */
     @Override
     public void run() {
         while (true) {
@@ -23,6 +38,10 @@ public class Wolf extends Animal {
         }
     }
 
+    /**
+     * Wykonuje pojedynczy ruch w kierunku najbliższego zająca.
+     * Jeśli złapie zająca, rozpoczyna cykl odpoczynku.
+     */
     private void move() {
         Hare target = board.getClosestHare(x, y);
         if (target == null) return;

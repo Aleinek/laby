@@ -3,3 +3,5 @@
 main
 java/*/lib
 *.shapes
+java/*/doxygen
+java/*/javadoc

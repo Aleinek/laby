@@ -13,18 +13,41 @@ import javafx.stage.Stage;
 
 import java.util.logging.Logger;
 
+/**
+ * Główna klasa interfejsu graficznego (JavaFX).
+ * Zarządza oknami aplikacji i wizualizacją symulacji.
+ */
 public class GUI extends Application {
-    public static int width, height, hareCount, delayK;
+    /** Szerokość planszy. */
+    public static int width;
+    /** Wysokość planszy. */
+    public static int height;
+    /** Liczba zajęcy. */
+    public static int hareCount;
+    /** Parametr opóźnienia. */
+    public static int delayK;
+    /** Rozmiar komórki w pikselach. */
     public static final int CELL_SIZE = 25;
+    /** Plansza symulacji. */
     private static Board board;
 
     private static final Logger logger = Logger.getLogger(GUI.class.getName());
 
+    /**
+     * Uruchamia interfejs graficzny.
+     * 
+     * @param primaryStage główne okno aplikacji
+     */
     @Override
     public void start(Stage primaryStage) {
         showStartWindow(primaryStage);
     }
 
+    /**
+     * Wyświetla okno konfiguracji symulacji.
+     * 
+     * @param primaryStage główne okno aplikacji
+     */
     private void showStartWindow(Stage primaryStage) {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
@@ -53,7 +76,7 @@ public class GUI extends Application {
                     throw new IllegalArgumentException("Hare count cannot exceed width * height - 1.");
                 }
 
-                // Proceed to simulation
+                // Przejdź do okna symulacji
                 showSimulationWindow(primaryStage);
             } catch (NumberFormatException ex) {
                 logger.warning("Invalid input: " + ex.getMessage());
@@ -70,6 +93,11 @@ public class GUI extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Wyświetla główne okno symulacji.
+     * 
+     * @param primaryStage główne okno aplikacji
+     */
     private void showSimulationWindow(Stage primaryStage) {
         board = new Board(width, height);
         Simulation.init(board, hareCount, delayK);
@@ -133,6 +161,9 @@ public class GUI extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Zatrzymuje symulację i wyświetla statystyki końcowe.
+     */
     public static void stopSimulation() {
         long endTime = System.currentTimeMillis();
         long duration = endTime - Simulation.startTime; // Calculate duration in milliseconds
@@ -172,6 +203,11 @@ public class GUI extends Application {
         });
     }
 
+    /**
+     * Zwraca aktualną planszę symulacji.
+     * 
+     * @return plansza
+     */
     public static Board getBoard() {
         return board;
     }

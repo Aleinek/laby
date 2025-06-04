@@ -1,8 +1,22 @@
+/**
+ * Klasa reprezentująca zająca w symulacji.
+ * Implementuje logikę ucieczki przed wilkiem.
+ */
 public class Hare extends Animal {
+    /**
+     * Tworzy nowego zająca.
+     * 
+     * @param board  plansza symulacji
+     * @param delayK parametr opóźnienia
+     */
     public Hare(Board board, int delayK) {
         super(board, delayK);
     }
 
+    /**
+     * Główna pętla wątku zająca.
+     * Wykonuje ruchy i sprawdza stan symulacji.
+     */
     @Override
     public void run() {
         while (alive) {
@@ -16,6 +30,10 @@ public class Hare extends Animal {
         }
     }
 
+    /**
+     * Wykonuje pojedynczy ruch ucieczki.
+     * Wybiera kierunek maksymalizujący dystans do wilka.
+     */
     private void move() {
         Wolf wolf = board.getWolf();
         if (wolf == null) return;
