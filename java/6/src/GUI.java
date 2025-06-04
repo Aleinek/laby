@@ -27,7 +27,7 @@ public class GUI extends Application {
     /** Parametr opóźnienia. */
     public static int delayK;
     /** Rozmiar komórki w pikselach. */
-    public static final int CELL_SIZE = 25;
+    public static int cellSize = 25; // domyślnie, ale będzie wyliczane dynamicznie
     /** Plansza symulacji. */
     private static Board board;
 
@@ -72,7 +72,7 @@ public class GUI extends Application {
                 hareCount = Integer.parseInt(hareCountField.getText());
                 delayK = Integer.parseInt(delayField.getText());
 
-                if (width > 50 || height > 50) {
+                if (width > 100 || height > 100) {
                     throw new IllegalArgumentException("Width and height must be at most 50.");
                 }
                 if (width < 1 || height < 1) {
@@ -105,13 +105,17 @@ public class GUI extends Application {
      * @param primaryStage główne okno aplikacji
      */
     private void showSimulationWindow(Stage primaryStage) {
-        board = new Board(width, height);
+        int maxWindowSize = 1300;
+        cellSize = Math.max(10, Math.min(maxWindowSize / width, maxWindowSize / height));
+        board = new Board(width, height, cellSize);
         Simulation.init(board, hareCount, delayK);
 
         GridPane grid = new GridPane();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Rectangle rect = board.getCell(x, y).getView();
+                rect.setWidth(cellSize);
+                rect.setHeight(cellSize);
                 int finalX = x, finalY = y;
                 rect.setOnMouseClicked(e -> board.getCell(finalX, finalY).togglePause());
                 grid.add(rect, x, y);

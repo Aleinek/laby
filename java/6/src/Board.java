@@ -18,19 +18,19 @@ public class Board {
     /** Flaga pauzy symulacji. */
     private volatile boolean paused = false;
 
-    /**
-     * Tworzy planszę o podanych wymiarach.
-     * 
-     * @param width  szerokość planszy
-     * @param height wysokość planszy
-     */
-    public Board(int width, int height) {
+    // Konstruktor z cellSize (do skalowania)
+    public Board(int width, int height, int cellSize) {
         this.width = width;
         this.height = height;
         cells = new Cell[width][height];
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
-                cells[x][y] = new Cell(x, y);
+                cells[x][y] = new Cell(x, y, cellSize);
+    }
+
+    // Stary konstruktor dla kompatybilności
+    public Board(int width, int height) {
+        this(width, height, GUI.cellSize);
     }
 
     /**

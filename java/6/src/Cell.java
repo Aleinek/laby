@@ -15,15 +15,26 @@ public class Cell {
     /** Flaga określająca, czy zwierzę w komórce jest zatrzymane. */
     private boolean paused;
 
+    /** Statyczny obrazek zająca (ładowany tylko raz). */
+    private static final Image hareImage = new Image("resources/Hare.png");
+    /** Statyczny obrazek wilka (ładowany tylko raz). */
+    private static final Image wolfImage = new Image("resources/Wolf.png");
+
     /**
-     * Tworzy komórkę o podanych współrzędnych.
+     * Tworzy komórkę o podanych współrzędnych i rozmiarze.
      * 
      * @param x pozycja x (nieużywana wizualnie, ale informacyjnie)
      * @param y pozycja y (nieużywana wizualnie, ale informacyjnie)
+     * @param cellSize rozmiar komórki
      */
-    public Cell(int x, int y) {
-        this.view = new Rectangle(GUI.CELL_SIZE, GUI.CELL_SIZE, Color.LIGHTGRAY);
+    public Cell(int x, int y, int cellSize) {
+        this.view = new Rectangle(cellSize, cellSize, Color.LIGHTGRAY);
         this.view.setStroke(Color.BLACK);
+    }
+
+    // Stary konstruktor dla kompatybilności (opcjonalnie można usunąć)
+    public Cell(int x, int y) {
+        this(x, y, GUI.cellSize);
     }
 
     /**
@@ -43,14 +54,9 @@ public class Cell {
     public synchronized void setOccupant(Animal a) {
         this.occupant = a;
         if (a instanceof Hare) {
-            // W rzeczywistości trzeba by załadować obrazek, ale to tylko przykład
-            Image hareImage = new Image("resources/Hare.png");
             view.setFill(new ImagePattern(hareImage));
-            //view.setFill(Color.LIGHTGREEN);
         } else if (a instanceof Wolf) {
-            Image wolfImage = new Image("resources/Wolf.png");
-            view.setFill(new ImagePattern(wolfImage));  
-            //view.setFill(Color.DARKRED); 
+            view.setFill(new ImagePattern(wolfImage));
         }
     }
 
