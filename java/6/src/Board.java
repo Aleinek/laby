@@ -91,7 +91,10 @@ public class Board {
      * @return najbliższy zając lub null, jeśli nie ma zajęcy
      */
     public synchronized Hare getClosestHare(int x, int y) {
-        return hares.stream().min(Comparator.comparingInt(h -> Math.abs(h.getX() - x) + Math.abs(h.getY() - y))).orElse(null);
+        return hares.stream()
+            .filter(h -> !getCell(h.getX(), h.getY()).isPaused())
+            .min(Comparator.comparingInt(h -> Math.abs(h.getX() - x) + Math.abs(h.getY() - y)))
+            .orElse(null);
     }
 
     /**
