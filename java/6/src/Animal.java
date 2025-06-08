@@ -20,22 +20,50 @@ public abstract class Animal extends Thread {
      * @param board   plansza symulacji
      * @param delayK  parametr opóźnienia
      */
-    public Animal(Board board, int delayK) {
+    public Animal(Board board, int delayK, boolean isWolf) {
         this.board = board;
         this.delayK = delayK;
-        placeRandomly();
+        if (isWolf) {
+            this.x = 0; 
+            this.y = 0;
+        } else {
+            placeRandomly();
+        }
+        
     }
 
     /**
      * Umieszcza zwierzę na losowej pozycji na planszy.
      */
     protected void placeRandomly() {
-        int x, y;
-        do {
-            x = Utils.random.nextInt(GUI.width);
-            y = Utils.random.nextInt(GUI.height);
-        } while (board.getCell(x, y).getOccupant() != null);
-        board.addAnimal(this, x, y);
+        synchronized (board) {
+            int maxAttempts = GUI.width * GUI.height;
+            int attempts = 0;
+            while (attempts < maxAttempts) {
+                int x = Utils.random.nextInt(GUI.width);
+                int y = Utils.random.nextInt(GUI.height);
+                Cell cell = board.getCell(x, y);
+                synchronized (cell) {
+                    if (cell.getOccupant() == null) {
+                        board.addAnimal(this, x, y);
+                        return;
+                    }
+                }
+                attempts++;
+            }
+            for (int x = 0; x < GUI.width; x++) {
+                for (int y = 0; y < GUI.height; y++) {
+                    Cell cell = board.getCell(x, y);
+                    synchronized (cell) {
+                        if (cell.getOccupant() == null) {
+                            board.addAnimal(this, x, y);
+                            return;
+                        }
+                    }
+                }
+            }
+            throw new RuntimeException("Brak wolnego miejsca na planszy!");
+        }
     }
 
     /**

@@ -10,7 +10,7 @@ public class Hare extends Animal {
      * @param delayK parametr opóźnienia
      */
     public Hare(Board board, int delayK) {
-        super(board, delayK);
+        super(board, delayK, false);
     }
 
     /**
