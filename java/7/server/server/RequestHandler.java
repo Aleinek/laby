@@ -17,14 +17,28 @@ public class RequestHandler extends Thread {
     @Override
     public void run() {
         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
 
-            Request req = (Request) in.readObject();
-            Response res = handleRequest(req);
-            out.writeObject(res);
+            while (true) {
+                Request req = (Request) in.readObject();
+                if (req == null || "exit".equalsIgnoreCase(req.command)) {
+                    break;
+                }
 
+                Response res = handleRequest(req);
+                out.writeObject(res);
+                out.flush();  // ważne przy dłuższej sesji
+            }
+
+        } catch (EOFException e) {
+            System.out.println("Klient zakończył połączenie.");
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException ignored) {
+            }
         }
     }
 

@@ -8,35 +8,66 @@ import java.util.Scanner;
 
 public class ClientCLI {
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in);
-             Socket socket = new Socket("localhost", 12345);
-             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+        try (Socket socket = new Socket("localhost", 12345);
+            Scanner scanner = new Scanner(System.in);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
-            System.out.println("Wybierz typ drzewa (INTEGER, DOUBLE, STRING): ");
-            TreeType type = TreeType.valueOf(scanner.nextLine().trim().toUpperCase());
+            System.out.println("Witaj w kliencie CLI! Aby zakończyć, wpisz 'exit' w dowolnym momencie.");
 
-            System.out.println("Podaj komendę (insert, delete, search, draw): ");
-            String command = scanner.nextLine().trim().toLowerCase();
+            TreeType currentType = null;
 
-            String value = null;
-            if (!command.equals("draw")) {
-                System.out.println("Podaj wartość: ");
-                value = scanner.nextLine().trim();
+            while (true) {
+                // Wybór typu drzewa (jeśli jeszcze nie wybrano)
+                if (currentType == null) {
+                    System.out.println("Wybierz typ drzewa (INTEGER, DOUBLE, STRING): ");
+                    String typeInput = scanner.nextLine().trim();
+                    if (typeInput.equalsIgnoreCase("exit")) break;
+
+                    try {
+                        currentType = TreeType.valueOf(typeInput.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Nieprawidłowy typ. Spróbuj ponownie.");
+                        continue;
+                    }
+                }
+
+                // Wybór komendy
+                System.out.println("Podaj komendę (insert, delete, search, draw, type, exit): ");
+                String command = scanner.nextLine().trim().toLowerCase();
+                if (command.equals("exit")) break;
+
+                if (command.equals("type")) {
+                    currentType = null;
+                    continue;
+                }
+
+                String value = null;
+                if (!command.equals("draw")) {
+                    System.out.println("Podaj wartość:");
+                    value = scanner.nextLine().trim();
+                    if (value.equalsIgnoreCase("exit")) break;
+                }
+
+                // Wysłanie żądania
+                Request request = new Request(currentType, command, value);
+                out.writeObject(request);
+
+                // Odczyt odpowiedzi
+                Response response = (Response) in.readObject();
+                System.out.println("\n--- Odpowiedź ---");
+                System.out.println(response.message);
+                if (response.treeOutput != null) {
+                    System.out.println(response.treeOutput);
+                }
+                System.out.println();
             }
 
-            Request request = new Request(type, command, value);
-            out.writeObject(request);
-
-            Response response = (Response) in.readObject();
-            System.out.println("\n--- Odpowiedź ---");
-            System.out.println(response.message);
-            if (response.treeOutput != null) {
-                System.out.println(response.treeOutput);
-            }
+            System.out.println("Zakończono.");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Błąd połączenia z serwerem: " + e.getMessage());
+            //e.printStackTrace();
         }
     }
 }
