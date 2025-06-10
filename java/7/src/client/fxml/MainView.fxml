@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.*?>
+
+<VBox spacing="10" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="client.Controller"
+      prefWidth="800" prefHeight="600">
+
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="Typ drzewa:"/>
+        <ComboBox fx:id="treeTypeBox"/>
+
+        <Label text="Operacja:"/>
+        <ChoiceBox fx:id="commandBox"/>
+
+        <Label text="Wartość:"/>
+        <TextField fx:id="valueField"/>
+
+        <Button text="Wykonaj" onAction="#onExecute"/>
+        <Button text="Rysuj" onAction="#onDraw"/>
+    </HBox>
+
+    <TextArea fx:id="outputArea" prefRowCount="2" wrapText="true"/>
+
+    <Canvas fx:id="treeCanvas" width="780" height="400"/>
+</VBox>
