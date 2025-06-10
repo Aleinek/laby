@@ -85,4 +85,17 @@ public class BinaryTree<T extends Comparable<T>> {
             drawRec(node.left, prefix + (isTail ? "    " : "│   "), true, sb);
         }
     }
+
+    public common.TreeNodeDTO toDTO() {
+        return toDTO(root);
+    }
+
+    private common.TreeNodeDTO toDTO(TreeNode<T> node) {
+        if (node == null) return null;
+        return new common.TreeNodeDTO(
+            node.value,
+            toDTO(node.left),
+            toDTO(node.right)
+        );
+    }
 }

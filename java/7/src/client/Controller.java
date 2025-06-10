@@ -63,8 +63,12 @@ public class Controller {
             Response res = (Response) in.readObject();
 
             outputArea.setText(res.message);
-            if (res.treeOutput != null) {
-                drawTree(res.treeOutput);
+            if (res.treeData != null) {
+                drawTree(res.treeData);
+            } else if (res.treeOutput != null) {
+                drawTreeText(res.treeOutput);
+            } else {
+                clearCanvas();
             }
 
         } catch (Exception e) {
@@ -80,9 +84,12 @@ public class Controller {
             out.flush();
             Response res = (Response) in.readObject();
 
-            if (res.treeOutput != null && !res.treeOutput.trim().isEmpty()) {
+            if (res.treeData != null) {
                 outputArea.setText("Drzewo typu " + type + ":\n" + res.message);
-                drawTree(res.treeOutput);
+                drawTree(res.treeData);
+            } else if (res.treeOutput != null && !res.treeOutput.trim().isEmpty()) {
+                outputArea.setText("Drzewo typu " + type + ":\n" + res.message);
+                drawTreeText(res.treeOutput);
             } else {
                 outputArea.setText("Drzewo typu " + type + " jest puste.");
                 clearCanvas();
@@ -98,16 +105,99 @@ public class Controller {
         onDraw();
     }
 
-    private void drawTree(String treeText) {
+    // Pomocnicza klasa do przechowywania pozycji węzła
+    private static class NodePos {
+        TreeNodeDTO node;
+        double x, y;
+        NodePos(TreeNodeDTO node, double x, double y) {
+            this.node = node; this.x = x; this.y = y;
+        }
+    }
+
+    private int countLeaves(TreeNodeDTO node) {
+        if (node == null) return 0;
+        if (node.left == null && node.right == null) return 1;
+        return countLeaves(node.left) + countLeaves(node.right);
+    }
+
+    private int getTreeDepth(TreeNodeDTO node) {
+        if (node == null) return 0;
+        return 1 + Math.max(getTreeDepth(node.left), getTreeDepth(node.right));
+    }
+
+    private void assignPositions(TreeNodeDTO node, double[] nextX, double y, double xStep, double yStep, java.util.Map<TreeNodeDTO, NodePos> posMap) {
+        if (node == null) return;
+        // Najpierw rekurencyjnie lewe i prawe dziecko
+        if (node.left != null) assignPositions(node.left, nextX, y + yStep, xStep, yStep, posMap);
+        if (node.right != null) assignPositions(node.right, nextX, y + yStep, xStep, yStep, posMap);
+        double x;
+        if (node.left == null && node.right == null) {
+            x = nextX[0];
+            nextX[0] += xStep;
+        } else if (node.left != null && node.right != null) {
+            x = (posMap.get(node.left).x + posMap.get(node.right).x) / 2;
+        } else if (node.left != null) {
+            x = posMap.get(node.left).x;
+        } else {
+            x = posMap.get(node.right).x;
+        }
+        posMap.put(node, new NodePos(node, x, y));
+    }
+
+    private void drawTree(TreeNodeDTO root) {
         GraphicsContext gc = treeCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, treeCanvas.getWidth(), treeCanvas.getHeight());
+        if (root == null) return;
+        int depth = getTreeDepth(root);
+        int leaves = countLeaves(root);
+        double canvasWidth = treeCanvas.getWidth();
+        double canvasHeight = treeCanvas.getHeight();
+        double yStep = canvasHeight / (depth + 1);
+        double xStep = canvasWidth / (leaves + 1);
+        java.util.Map<TreeNodeDTO, NodePos> posMap = new java.util.HashMap<>();
+        assignPositions(root, new double[]{xStep}, yStep, xStep, yStep, posMap);
+        // Rysuj krawędzie
+        for (NodePos np : posMap.values()) {
+            if (np.node.left != null) {
+                NodePos left = posMap.get(np.node.left);
+                gc.strokeLine(np.x, np.y, left.x, left.y);
+            }
+            if (np.node.right != null) {
+                NodePos right = posMap.get(np.node.right);
+                gc.strokeLine(np.x, np.y, right.x, right.y);
+            }
+        }
+        // Rysuj węzły
+        for (NodePos np : posMap.values()) {
+            String valueStr = np.node.value != null ? np.node.value.toString() : "";
+            gc.setFont(Font.font(14));
+            javafx.scene.text.Text tempText = new javafx.scene.text.Text(valueStr);
+            tempText.setFont(gc.getFont());
+            double textWidth = tempText.getLayoutBounds().getWidth();
+            double textHeight = tempText.getLayoutBounds().getHeight();
+            double padding = 12;
+            double ovalWidth = Math.max(36, textWidth + padding);
+            double ovalHeight = Math.max(36, textHeight + padding);
+            gc.setFill(Color.LIGHTBLUE);
+            gc.fillOval(np.x - ovalWidth/2, np.y - ovalHeight/2, ovalWidth, ovalHeight);
+            gc.setStroke(Color.BLACK);
+            gc.strokeOval(np.x - ovalWidth/2, np.y - ovalHeight/2, ovalWidth, ovalHeight);
+            gc.setFill(Color.BLACK);
+            // Wycentrowanie tekstu
+            double textX = np.x - textWidth/2;
+            double textY = np.y + textHeight/4; // optyczne wyśrodkowanie
+            gc.fillText(valueStr, textX, textY);
+        }
+    }
 
+    // Stara metoda tekstowa (fallback)
+    private void drawTreeText(String treeText) {
+        GraphicsContext gc = treeCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, treeCanvas.getWidth(), treeCanvas.getHeight());
         String[] lines = treeText.split("\n");
         double x = 20, y = 30;
-
         gc.setFont(Font.font("Courier New", 14));
         gc.setFill(Color.BLACK);
-
         for (String line : lines) {
             gc.fillText(line, x, y);
             y += 18;

@@ -75,21 +75,21 @@ public class RequestHandler extends Thread {
         switch (command) {
             case "insert" -> {
                 tree.insert(value);
-                return new Response("Inserted: " + value, tree.draw());
+                return new Response("Inserted: " + value, tree.draw(), tree.toDTO());
             }
             case "delete" -> {
                 tree.delete(value);
-                return new Response("Deleted: " + value, tree.draw());
+                return new Response("Deleted: " + value, tree.draw(), tree.toDTO());
             }
             case "search" -> {
                 boolean found = tree.search(value);
-                return new Response("Element " + (found ? "found" : "not found"), null);
+                return new Response("Element " + (found ? "found" : "not found"), null, tree.toDTO());
             }
             case "draw" -> {
-                return new Response("Tree structure:", tree.draw());
+                return new Response("Tree structure:", tree.draw(), tree.toDTO());
             }
             default -> {
-                return new Response("Unknown command: " + command, null);
+                return new Response("Unknown command: " + command, null, tree.toDTO());
             }
         }
     }
