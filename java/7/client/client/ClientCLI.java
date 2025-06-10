@@ -35,25 +35,38 @@ public class ClientCLI {
                 // Wybór komendy
                 System.out.println("Podaj komendę (insert, delete, search, draw, type, exit): ");
                 String command = scanner.nextLine().trim().toLowerCase();
-                if (command.equals("exit")) break;
+                if (command.equals("exit")) {
+                    out.writeObject(new Request(currentType, "exit", null));
+                    break;
+                }
 
                 if (command.equals("type")) {
                     currentType = null;
                     continue;
                 }
 
+                // Sprawdź poprawność komendy
+                if (!command.matches("insert|delete|search|draw")) {
+                    System.out.println("Nieprawidłowa komenda. Spróbuj ponownie.");
+                    continue;
+                }
+
+                // Pobierz wartość tylko jeśli potrzebna
                 String value = null;
                 if (!command.equals("draw")) {
                     System.out.println("Podaj wartość:");
                     value = scanner.nextLine().trim();
-                    if (value.equalsIgnoreCase("exit")) break;
+                    if (value.equalsIgnoreCase("exit")) {
+                        out.writeObject(new Request(currentType, "exit", null));
+                        break;
+                    }
                 }
 
-                // Wysłanie żądania
+                // Wyślij zapytanie
                 Request request = new Request(currentType, command, value);
                 out.writeObject(request);
 
-                // Odczyt odpowiedzi
+                // Odczytaj odpowiedź
                 Response response = (Response) in.readObject();
                 System.out.println("\n--- Odpowiedź ---");
                 System.out.println(response.message);

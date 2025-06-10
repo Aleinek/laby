@@ -17,7 +17,7 @@ public class RequestHandler extends Thread {
     @Override
     public void run() {
         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
 
             while (true) {
                 Request req = (Request) in.readObject();
@@ -27,7 +27,7 @@ public class RequestHandler extends Thread {
 
                 Response res = handleRequest(req);
                 out.writeObject(res);
-                out.flush();  // ważne przy dłuższej sesji
+                out.flush();
             }
 
         } catch (EOFException e) {

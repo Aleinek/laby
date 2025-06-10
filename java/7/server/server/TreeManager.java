@@ -1,7 +1,8 @@
 package server;
 
 import common.TreeType;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TreeManager {
     private final Map<TreeType, BinaryTree<?>> trees = new HashMap<>();

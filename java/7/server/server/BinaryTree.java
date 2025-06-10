@@ -65,15 +65,24 @@ public class BinaryTree<T extends Comparable<T>> {
 
     public String draw() {
         StringBuilder sb = new StringBuilder();
-        drawRec(root, "", sb);
+        drawRec(root, "", true, sb);
         return sb.toString();
     }
 
-    private void drawRec(TreeNode<T> node, String prefix, StringBuilder sb) {
-        if (node != null) {
-            drawRec(node.right, prefix + "    ", sb);
-            sb.append(prefix).append(node.value).append("\n");
-            drawRec(node.left, prefix + "    ", sb);
+    private void drawRec(TreeNode<T> node, String prefix, boolean isTail, StringBuilder sb) {
+        if (node == null) return;
+
+        if (node.right != null) {
+            drawRec(node.right, prefix + (isTail ? "│   " : "    "), false, sb);
+        }
+
+        sb.append(prefix)
+        .append(isTail ? "└── " : "┌── ")
+        .append(node.value)
+        .append("\n");
+
+        if (node.left != null) {
+            drawRec(node.left, prefix + (isTail ? "    " : "│   "), true, sb);
         }
     }
 }
